@@ -1015,7 +1015,6 @@ img:hover {
   padding-top: 10px;
   padding-bottom: 10px;
 }
-}
 
 .details_7 p {
   padding-top: 10px;
@@ -1482,7 +1481,6 @@ label {
 }
 
 .video-container .box-container{
-  margin-top: 3rem;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
   margin-right: 2.2rem;
@@ -1532,3 +1530,4 @@ label {
   opacity: 0;
   transform: translateY(0);
 }
+
