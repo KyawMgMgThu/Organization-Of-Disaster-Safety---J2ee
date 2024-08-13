@@ -29,7 +29,7 @@ public class LoginServlet extends HttpServlet {
 
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
-                response.sendRedirect("welcome.html");
+                response.sendRedirect("index.html");
             } else {
                 response.sendRedirect("login.html?error=Invalid credentials");
             }

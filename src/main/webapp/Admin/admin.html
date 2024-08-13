@@ -45,13 +45,13 @@
                         </li>
                         <li class="side-nav-item">
                             <a href="news.html" class="side-nav-link">
-                                <i class="uil-copy-alt"></i>
+                                <i class="mdi mdi-newspaper"></i>
                                 <span> News</span>
                             </a>
                         </li>
                         <li class="side-nav-item">
                             <a href="indanger.html" class="side-nav-link">
-                                <i class="uil-folder-plus"></i>
+                                <i class="mdi mdi-car-emergency"></i>
                                 <span>In Danger</span>
                             </a>
                         </li>
@@ -184,102 +184,93 @@
                         <button class="button-menu-mobile open-left">
                             <i class="mdi mdi-menu"></i>
                         </button>
-                        <div class="app-search dropdown d-none d-lg-block">
-                            <form>
-                                <div class="input-group">
-                                    <input
-                                        type="text"
-                                        class="form-control dropdown-toggle"
-                                        placeholder="Search..."
-                                        id="top-search"
-                                    >
-                                    <span class="mdi mdi-magnify search-icon"></span>
-                                    <button class="input-group-text btn-primary" type="submit">Search</button>
+                     
+                    </div>
+                    <!-- end Topbar -->
+                   <!-- Start Content-->
+                   <div class="container-fluid">
+                    <div class="row">
+                        <div class=" col-xl-12 col-lg-12">
+                            <div class="tab-content mt-4">
+                                <div class="tab-pane show active">
+                                    <table id="datatable-buttons" class="table table-striped dt-responsive nowrap w-100">
+                                        <thead>
+                                            <tr>
+                                                <th>No</th>
+                                                <th>Name</th>
+                                                <th>Email</th>
+                                                <th>Start Date</th>
+                                                <th>Actions</th> 
+                                            </tr>
+                                        </thead>
+                                        <tbody id="admin-table">
+                                            <tr>
+                                                <td>1</td>
+                                                <td>Kyaw Mg Mg Thu</td>
+                                                <td>mthu35997@gmail.com</td>
+                                                <td>11/8/2024</td>
+                                                <td>
+                                                    <button class="btn btn-primary btn-sm edit-btn" onclick="editUser(this)">
+                                                        <i class="mdi mdi-pencil"></i> Edit
+                                                    </button>
+                                                    <button class="btn btn-danger btn-sm delete-btn">
+                                                        <i class="mdi mdi-trash-can"></i> Delete
+                                                    </button>
+                                                </td> 
+                                            </tr>
+                                            <tr>
+                                                <td>1</td>
+                                                <td>Kyaw Mg Mg Thu</td>
+                                                <td>mthu35997@gmail.com</td>
+                                                <td>11/8/2024</td>
+                                                <td>
+                                                    <button class="btn btn-primary btn-sm edit-btn" onclick="editUser(this)">
+                                                        <i class="mdi mdi-pencil"></i> Edit
+                                                    </button>
+                                                    <button class="btn btn-danger btn-sm delete-btn">
+                                                        <i class="mdi mdi-trash-can"></i> Delete
+                                                    </button>
+                                                </td> 
+                                            </tr>
+                                            
+                                        </tbody>
+                                    </table>                                           
+                                </div> <!-- end preview-->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Edit Form Modal -->
+            <div id="editModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title" id="editModalLabel">Edit User</h4>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="editForm">
+                                <div class="mb-3">
+                                    <label for="editName" class="form-label">Name</label>
+                                    <input type="text" class="form-control" id="editName">
                                 </div>
+                                <div class="mb-3">
+                                    <label for="editEmail" class="form-label">Email</label>
+                                    <input type="email" class="form-control" id="editEmail">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="editPassword" class="form-label">Password</label>
+                                    <input type="password" class="form-control" id="editPassword">
+                                </div>
+                                <button type="submit" class="btn btn-primary">Save changes</button>
                             </form>
                         </div>
                     </div>
-                    <!-- end Topbar -->
-                    <!-- Start Content-->
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div class=" col-xl-12 col-lg-12">
-                                <div class="tab-content mt-4">
-                                    <div class="tab-pane show active">
-                                        <table id="datatable-buttons" class="table table-striped dt-responsive nowrap w-100">
-                                            <thead>
-                                                <tr>
-                                                    <th>No</th>
-                                                    <th>Name</th>
-                                                    <th>Email</th>
-                                                    <th>Start Date</th>
-                                                    <th>Actions</th> 
-                                                </tr>
-                                            </thead>
-                                            
-                                            <tbody>
-                                                <tr>
-                                                    <td>1</td>
-                                                    <td>Kyaw Mg Mg Thu</td>
-                                                    <td>mthu35997@gmail.com</td>
-                                                    <td>11/8/2024</td>
-                                                    <td>
-                                                        <button class="btn btn-primary btn-sm edit-btn">
-                                                            <i class="mdi mdi-pencil"></i> Edit
-                                                        </button>
-                                                        <button class="btn btn-danger btn-sm delete-btn">
-                                                            <i class="mdi mdi-trash-can"></i> Delete
-                                                        </button>
-                                                    </td> 
-                                                </tr>
-                                                <tr>
-                                                    <td>2</td>
-                                                    <td>Kyaw Mg Mg Thu</td>
-                                                    <td>mthu35997@gmail.com</td>
-                                                    <td>11/8/2024</td>
-                                                    <td>
-                                                        <button class="btn btn-primary btn-sm edit-btn">
-                                                            <i class="mdi mdi-pencil"></i> Edit
-                                                        </button>
-                                                        <button class="btn btn-danger btn-sm delete-btn">
-                                                            <i class="mdi mdi-trash-can"></i> Delete
-                                                        </button>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>3</td>
-                                                    <td>Kyaw Mg Mg Thu</td>
-                                                    <td>mthu35997@gmail.com</td>
-                                                    <td>11/8/2024</td>
-                                                    <td>
-                                                        <button class="btn btn-primary btn-sm edit-btn">
-                                                            <i class="mdi mdi-pencil"></i> Edit
-                                                        </button>
-                                                        <button class="btn btn-danger btn-sm delete-btn">
-                                                            <i class="mdi mdi-trash-can"></i> Delete
-                                                        </button>
-                                                    </td>
-                                                </tr>
-        
-                                            </tbody>
-                                            
-                                            
-                                        </table>                                           
-                                    </div> <!-- end preview-->
-                                
-                                <!-- end row -->
-                            </div>
-                            <!-- end col -->
-                        </div>
-                        <!-- end row -->
-
-                        
-                        <!-- end row -->
-                    </div>
-                    <!-- container -->
-
                 </div>
-                <!-- content -->
+            </div>
+
                 <!-- Footer Start -->
                 <footer class="footer">
                     <div class="container-fluid">
@@ -452,6 +443,7 @@
 
         <!-- demo app -->
         <script src="assets/js/pages/demo.datatable-init.js"></script>
+        <script src="assets/js/script.js"></script>
     </body>
 
 </html>
