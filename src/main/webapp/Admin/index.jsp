@@ -1,3 +1,5 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -338,7 +340,7 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <script>document.write(new Date().getFullYear())</script>
-                                © All Rights Reserved. Developed by Group✌🏽+☝🏽
+                                Â© All Rights Reserved. Developed by Groupâð½+âð½
                             </div>
                             <div class="col-md-6">
                                 <div class="text-md-end footer-links d-none d-md-block">
