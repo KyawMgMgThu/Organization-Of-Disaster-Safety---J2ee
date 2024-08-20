@@ -14,8 +14,35 @@
     <url-pattern>/authServlet</url-pattern>
 </servlet-mapping>
 
+<servlet>
+    <servlet-name>LogoutServlet</servlet-name>
+    <servlet-class>auth.LogoutServlet</servlet-class>
+</servlet>
+<servlet-mapping>
+    <servlet-name>LogoutServlet</servlet-name>
+    <url-pattern>/LogoutServlet</url-pattern>
+</servlet-mapping>
+
+<servlet>
+    <servlet-name>DeleteUserServlet</servlet-name>
+    <servlet-class>auth.DeleteUserServlet</servlet-class>
+</servlet>
+<servlet-mapping>
+    <servlet-name>DeleteUserServlet</servlet-name>
+    <url-pattern>/DeleteUserServlet</url-pattern>
+</servlet-mapping>
+<servlet>
+    <servlet-name>AdminEditServlet</servlet-name>
+    <servlet-class>auth.AdminEditServlet</servlet-class>
+</servlet>
+<servlet-mapping>
+    <servlet-name>AdminEditServlet</servlet-name>
+    <url-pattern>/adminedit</url-pattern>
+</servlet-mapping>
 
 </web-app>
-
-
 </element>
+
+
+
+

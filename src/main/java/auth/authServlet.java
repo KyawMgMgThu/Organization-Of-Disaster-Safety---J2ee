@@ -2,19 +2,18 @@ package auth;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
+import com.google.gson.JsonObject;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import de.svws_nrw.ext.jbcrypt.BCrypt;
 
 @WebServlet("/authServlet")
@@ -27,7 +26,8 @@ public class authServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
-        response.setContentType("text/html");
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
         PrintWriter out = response.getWriter();
 
         String username = request.getParameter("username");
@@ -37,17 +37,25 @@ public class authServlet extends HttpServlet {
         String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt());
 
         String signUpQuery = "INSERT INTO users (name, email, password) VALUES (?, ?, ?)";
-        String signInQuery = "SELECT name, password FROM users WHERE email = ?"; 
+        String signInQuery = "SELECT name, password FROM users WHERE email = ?";
+        String checkEmailQuery = "SELECT email FROM users WHERE email = ?";
+
+        JsonObject jsonResponse = new JsonObject();
+
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet resultSet = null;
+        ResultSet emailResultSet = null;
 
         try {
             Class.forName("org.mariadb.jdbc.Driver");
-            Connection conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/ODS_System", "kyawmgmgthu", "kyawmgmgthu789");
+            conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/ODS_System", "kyawmgmgthu", "kyawmgmgthu789");
 
             if (username == null || username.trim().isEmpty()) { 
                 // Sign In
-                PreparedStatement pstmt = conn.prepareStatement(signInQuery);
+                pstmt = conn.prepareStatement(signInQuery);
                 pstmt.setString(1, email);
-                ResultSet resultSet = pstmt.executeQuery();
+                resultSet = pstmt.executeQuery();
 
                 if (resultSet.next()) {
                     String storedUsername = resultSet.getString("name"); 
@@ -57,38 +65,61 @@ public class authServlet extends HttpServlet {
                     if (passwordMatch) {
                         session.setAttribute("username", storedUsername); 
                         session.setAttribute("email", email);
-                        response.sendRedirect("Admin/index.jsp"); 
+                        jsonResponse.addProperty("status", "success");
+                        jsonResponse.addProperty("redirect", "index.jsp");
                     } else {
-                        out.println("Invalid email or password.");
+                        jsonResponse.addProperty("status", "error");
+                        jsonResponse.addProperty("message", "Invalid email or password.");
                     }
                 } else {
-                    out.println("Invalid email or password.");
+                    jsonResponse.addProperty("status", "error");
+                    jsonResponse.addProperty("message", "Invalid email or password.");
                 }
-                resultSet.close();
-                pstmt.close();
             } else {
-                // Sign Up
-                PreparedStatement pstmt = conn.prepareStatement(signUpQuery);
-                pstmt.setString(1, username);
-                pstmt.setString(2, email);
-                pstmt.setString(3, hashedPassword);
+                pstmt = conn.prepareStatement(checkEmailQuery);
+                pstmt.setString(1, email);
+                emailResultSet = pstmt.executeQuery();
 
-                int rowsAffected = pstmt.executeUpdate();
-                if (rowsAffected > 0) {
-                    session.setAttribute("name", username);
-                    session.setAttribute("email", email);
-                    response.sendRedirect("Admin/login.jsp"); 
+                if (emailResultSet.next()) {
+                    jsonResponse.addProperty("status", "error");
+                    jsonResponse.addProperty("message", "Email already exists. Please use a different email.");
                 } else {
-                    out.println("Failed to sign up.");
-                }
-                pstmt.close();
-            }
+                    // Sign Up
+                    pstmt = conn.prepareStatement(signUpQuery);
+                    pstmt.setString(1, username);
+                    pstmt.setString(2, email);
+                    pstmt.setString(3, hashedPassword);
 
-            conn.close();
+                    int rowsAffected = pstmt.executeUpdate();
+                    if (rowsAffected > 0) {
+                        session.setAttribute("name", username);
+                        session.setAttribute("email", email);
+                        jsonResponse.addProperty("status", "success");
+                        jsonResponse.addProperty("redirect", "login.jsp");
+                    } else {
+                        jsonResponse.addProperty("status", "error");
+                        jsonResponse.addProperty("message", "Failed to sign up.");
+                    }
+                }
+            }
         } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
-            out.println("Error: " + e.getMessage());
+            jsonResponse.addProperty("status", "error");
+            jsonResponse.addProperty("message", "Error: " + e.getMessage());
+        } finally {
+            // Close resources
+            try {
+                if (resultSet != null) resultSet.close();
+                if (emailResultSet != null) emailResultSet.close();
+                if (pstmt != null) pstmt.close();
+                if (conn != null) conn.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
+
+        out.print(jsonResponse.toString());
+        out.flush();
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

@@ -11,6 +11,7 @@
     <!-- App css -->
     <link href="assets/css/icons.min.css" rel="stylesheet" type="text/css" />
     <link href="assets/css/app.min.css" rel="stylesheet" type="text/css" id="app-style"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
 </head>
 <body class="loading" data-layout-config='{"darkMode":false}'>
 
@@ -26,7 +27,7 @@
                                 <p class="text-muted mb-4">Create your account</p>
                             </div>
 
-                            <form action="/Disaster_Safety/authServlet" method="post">
+                            <form id="authForm" action="/Disaster_Safety/authServlet" method="post">
                                 <div class="mb-3">
                                     <label for="fullname" class="form-label">Full Name</label>
                                     <input class="form-control" name="username" type="text" id="fullname" placeholder="Enter your name" required>
@@ -86,6 +87,50 @@
     <!-- bundle -->
     <script src="assets/js/vendor.min.js"></script>
     <script src="assets/js/app.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
+
+<script>
+document.getElementById('authForm').addEventListener('submit', function(event) {
+    event.preventDefault();
+    const formData = new FormData(this);
+    fetch('/Disaster_Safety/authServlet', {
+        method: 'POST',
+        body: new URLSearchParams(formData)
+    })
+    .then(response => response.json())
+    .then(responseJson => handleAuthResponse(responseJson))
+    .catch(error => {
+        console.error('Error:', error);
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'An unexpected error occurred.'
+        });
+    });
+});
+
+
+function handleAuthResponse(responseJson) {
+    if (responseJson.status === "success") {
+        Swal.fire({
+            icon: 'success',
+            title: 'Success',
+            text: 'Operation completed successfully!',
+            timer: 1500,
+            showConfirmButton: false
+        }).then(() => {
+            window.location.href = responseJson.redirect;
+        });
+    } else {
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: responseJson.message
+        });
+    }
+}
+
+</script>
     
 </body>
 </html>
