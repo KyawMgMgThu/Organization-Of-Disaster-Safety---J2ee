@@ -1,3 +1,57 @@
+<%@ page import="java.sql.*" %>
+<%
+    String idParam = request.getParameter("id");
+    if (idParam == null || idParam.isEmpty()) {
+        out.println("<p>Error: Missing or invalid news ID.</p>");
+        return; // Stop further processing
+    }
+
+    int id = 0;
+    try {
+        id = Integer.parseInt(idParam);
+    } catch (NumberFormatException e) {
+        out.println("<p>Error: Invalid news ID format.</p>");
+        return; // Stop further processing
+    }
+
+    String title = "";
+    String content = "";
+    String photoPath = "";
+
+    Connection conn = null;
+    PreparedStatement stmt = null;
+    ResultSet rs = null;
+
+    try {
+        // Database connection
+        Class.forName("org.mariadb.jdbc.Driver");
+        conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/ODS_System", "kyawmgmgthu", "kyawmgmgthu789");
+
+        // Fetch the current details of the news item
+        String query = "SELECT title, content, photo_path FROM news WHERE id = ?";
+        stmt = conn.prepareStatement(query);
+        stmt.setInt(1, id);
+        rs = stmt.executeQuery();
+
+        if (rs.next()) {
+            title = rs.getString("title");
+            content = rs.getString("content");
+            photoPath = rs.getString("photo_path");
+        } else {
+            out.println("<p>Error: News item with ID " + id + " does not exist.</p>");
+            return; // Stop further processing
+        }
+        
+    } catch (Exception e) {
+        out.println("<p>Error: " + e.getMessage() + "</p>");
+    } finally {
+        // Close resources
+        if (rs != null) try { rs.close(); } catch (SQLException e) { e.printStackTrace(); }
+        if (stmt != null) try { stmt.close(); } catch (SQLException e) { e.printStackTrace(); }
+        if (conn != null) try { conn.close(); } catch (SQLException e) { e.printStackTrace(); }
+    }
+%>
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -195,26 +249,27 @@
                                     <a href="news.html" class="btn btn-secondary"><i class="mdi mdi-arrow-left"></i> Back to News</a>
                                 </div>
                                 <h4 class="mb-4">Add News</h4>
-                                <form action="your-submit-endpoint" method="post" enctype="multipart/form-data">
-                                    <div class="mb-3">
-                                        <label for="news-title" class="form-label">Title</label>
-                                        <input type="text" class="form-control" id="news-title" name="title" required>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="news-content" class="form-label">Content</label>
-                                        <textarea class="form-control" id="news-content" name="content" rows="4" required></textarea>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="news-photo" class="form-label">Photo</label>
-                                        <input type="file" class="form-control" id="news-photo" name="photo" accept="image/*" onchange="previewPhoto()">
-                                        <img id="photo-preview" src="" alt="Photo Preview" class="img-thumbnail mt-3" style="display:none; width: 100px;">
-                                    </div>
-                                    
-                                    <div class="text-end">
-                                        <button type="submit" class="btn btn-primary"><i class="mdi mdi-check"></i> Save</button>
-                                        <a href="news.html" class="btn btn-secondary"><i class="mdi mdi-cancel"></i> Cancel</a>
-                                    </div>
-                                </form>
+                                <form action="/Disaster_Safety/NewsUpdateServlet" method="post" enctype="multipart/form-data">
+            <input type="hidden" name="id" value="<%= id %>">
+            <div class="mb-3">
+                <label for="title" class="form-label">Title</label>
+                <input type="text" class="form-control" id="title" name="title" value="<%= title %>" required>
+            </div>
+            <div class="mb-3">
+                <label for="content" class="form-label">Content</label>
+                <textarea class="form-control" id="content" name="content" rows="5" required><%= content %></textarea>
+            </div>
+            <div class="mb-3">
+                <label for="photo" class="form-label">Current Photo</label><br>
+                <img src="../news_images/<%= photoPath %>" alt="Current Photo" width="100"><br><br>
+                <label for="newPhoto" class="form-label">Change Photo</label>
+                <input type="file" class="form-control" id="newPhoto" name="photo" accept="image/*">
+            </div>
+            <div class="text-end">
+                <button type="submit" class="btn btn-primary">Update</button>
+                <a href="news.html" class="btn btn-secondary">Cancel</a>
+            </div>
+        </form>
                             </div>
                         </div>
                     </div>
@@ -225,7 +280,7 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <script>document.write(new Date().getFullYear())</script>
-                                © All Rights Reserved. Developed by Group✌🏽+☝🏽
+                                © All Rights Reserved. Developed by Group ✌🏽+☝🏽 
                             </div>
                             <div class="col-md-6">
                                 <div class="text-md-end footer-links d-none d-md-block">

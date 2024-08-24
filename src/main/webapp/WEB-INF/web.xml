@@ -40,8 +40,42 @@
     <url-pattern>/adminedit</url-pattern>
 </servlet-mapping>
 
+<servlet>
+    <servlet-name>NewsServlet</servlet-name>
+    <servlet-class>auth.NewsServlet</servlet-class>
+</servlet>
+<servlet-mapping>
+    <servlet-name>NewsServlet</servlet-name>
+    <url-pattern>/NewsServlet</url-pattern>
+</servlet-mapping>
+
+
+<servlet>
+    <servlet-name>NewsDeleteServlet</servlet-name>
+    <servlet-class>auth.NewsDeleteServlet</servlet-class>
+</servlet>
+
+<servlet-mapping>
+    <servlet-name>NewsDeleteServlet</servlet-name>
+    <url-pattern>/NewsDeleteServlet</url-pattern>
+</servlet-mapping>
+
+<servlet>
+    <servlet-name>NewsUpdateServlet</servlet-name>
+    <servlet-class>auth.NewsUpdateServlet</servlet-class>
+</servlet>
+<servlet-mapping>
+    <servlet-name>NewsUpdateServlet</servlet-name>
+    <url-pattern>/NewsUpdateServlet</url-pattern>
+</servlet-mapping>
+
+
+
+
 </web-app>
 </element>
+
+
 
 
 

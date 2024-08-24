@@ -1,3 +1,5 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -38,26 +40,26 @@
                     <ul class="side-nav">
                         <li class="side-nav-title side-nav-item">Navigation</li>
                         <li class="side-nav-item">
-                            <a href="index.html" class="side-nav-link">
+                            <a href="index.jsp" class="side-nav-link">
                                 <i class="uil-home-alt"></i>
                                 <span> Dashboards</span>
                             </a>
                         </li>
                         <li class="side-nav-item">
-                            <a href="news.html" class="side-nav-link">
+                            <a href="news.jsp" class="side-nav-link">
                                 <i class="mdi mdi-newspaper"></i>
                                 <span> News</span>
                             </a>
                         </li>
                         <li class="side-nav-item">
-                            <a href="indanger.html" class="side-nav-link">
+                            <a href="indanger.jsp" class="side-nav-link">
                                 <i class="mdi mdi-car-emergency"></i>
                                 <span>In Danger</span>
                             </a>
                         </li>
                         <li class="side-nav-item">
                             <a
-                                href="map.html"
+                                href="map.jsp"
                                 class="side-nav-link"
                             >
                                 <i class="uil-location-point"></i>
@@ -66,8 +68,6 @@
                         </li>
                         <li class="side-nav-item">
                             <a
-                                href="admin.html"
-                                class="side-nav-link"
                             >
                                 <i class="uil-user"></i>
                                 <span>Admin</span>
@@ -88,16 +88,16 @@
                             <div class="collapse" id="sidebarPagesAuth">
                                 <ul class="side-nav-third-level">
                                     <li>
-                                        <a href="login.html">Login</a>
+                                        <a href="login.jsp">Login</a>
                                     </li>
                                     <li>
-                                        <a href="register.html">Register</a>
+                                        <a href="register.jsp">Register</a>
                                     </li>
                                     <li>
-                                        <a href="logout.html">Logout</a>
+                                        <a href="logout.jsp">Logout</a>
                                     </li>
                                     <li>
-                                        <a href="recoverpw.html">Recover Password</a>
+                                        <a href="recover.jsp">Recover Password</a>
                                     </li>
                                 </ul>
                             </div>
@@ -195,26 +195,25 @@
                                     <a href="news.html" class="btn btn-secondary"><i class="mdi mdi-arrow-left"></i> Back to News</a>
                                 </div>
                                 <h4 class="mb-4">Add News</h4>
-                                <form action="your-submit-endpoint" method="post" enctype="multipart/form-data">
-                                    <div class="mb-3">
-                                        <label for="news-title" class="form-label">Title</label>
-                                        <input type="text" class="form-control" id="news-title" name="title" required>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="news-content" class="form-label">Content</label>
-                                        <textarea class="form-control" id="news-content" name="content" rows="4" required></textarea>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="news-photo" class="form-label">Photo</label>
-                                        <input type="file" class="form-control" id="news-photo" name="photo" accept="image/*" onchange="previewPhoto()">
-                                        <img id="photo-preview" src="" alt="Photo Preview" class="img-thumbnail mt-3" style="display:none; width: 100px;">
-                                    </div>
-                                    
-                                    <div class="text-end">
-                                        <button type="submit" class="btn btn-primary"><i class="mdi mdi-check"></i> Save</button>
-                                        <a href="news.html" class="btn btn-secondary"><i class="mdi mdi-cancel"></i> Cancel</a>
-                                    </div>
-                                </form>
+                                 <form action="/Disaster_Safety/NewsServlet" method="post" enctype="multipart/form-data">
+            <div class="mb-3">
+                <label for="news-title" class="form-label">Title</label>
+                <input type="text" class="form-control" id="news-title" name="title" required>
+            </div>
+            <div class="mb-3">
+                <label for="news-content" class="form-label">Content</label>
+                <textarea class="form-control" id="news-content" name="content" rows="4" required></textarea>
+            </div>
+            <div class="mb-3">
+                <label for="news-photo" class="form-label">Photo</label>
+                <input type="file" class="form-control" id="news-photo" name="photo" accept="image/*" onchange="previewPhoto()">
+                <img id="photo-preview" src="" alt="Photo Preview" class="img-thumbnail mt-3" style="display:none; width: 100px;">
+            </div>
+            <div class="text-end">
+                <button type="submit" class="btn btn-primary">Save</button>
+                <a href="news.jsp" class="btn btn-secondary">Cancel</a>
+            </div>
+        </form>
                             </div>
                         </div>
                     </div>
@@ -392,6 +391,17 @@
         <!-- demo app -->
         <script src="assets/js/pages/demo.datatable-init.js"></script>\
         <script src="assets/js/script.js"></script>
+        <script>
+        function previewPhoto() {
+            const file = document.getElementById('news-photo').files[0];
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                document.getElementById('photo-preview').src = e.target.result;
+                document.getElementById('photo-preview').style.display = 'block';
+            };
+            reader.readAsDataURL(file);
+        }
+        </script>
     </body>
 
 </html>

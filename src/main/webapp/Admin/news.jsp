@@ -1,3 +1,4 @@
+<%@ page import="java.sql.*, javax.servlet.*, javax.servlet.http.*" %>
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -38,13 +39,13 @@
                     <ul class="side-nav">
                         <li class="side-nav-title side-nav-item">Navigation</li>
                         <li class="side-nav-item">
-                            <a href="index.html" class="side-nav-link">
+                            <a href="index.jsp" class="side-nav-link">
                                 <i class="uil-home-alt"></i>
                                 <span> Dashboards</span>
                             </a>
                         </li>
                         <li class="side-nav-item">
-                            <a href="news.html" class="side-nav-link">
+                            <a href="news.jsp" class="side-nav-link">
                                 <i class="mdi mdi-newspaper"></i>
                                 <span> News</span>
                             </a>
@@ -57,7 +58,7 @@
                         </li>
                         <li class="side-nav-item">
                             <a
-                                href="map.html"
+                                href="map.jsp"
                                 class="side-nav-link"
                             >
                                 <i class="uil-location-point"></i>
@@ -66,7 +67,7 @@
                         </li>
                         <li class="side-nav-item">
                             <a
-                                href="admin.html"
+                                href="admin.jsp"
                                 class="side-nav-link"
                             >
                                 <i class="uil-user"></i>
@@ -88,16 +89,16 @@
                             <div class="collapse" id="sidebarPagesAuth">
                                 <ul class="side-nav-third-level">
                                     <li>
-                                        <a href="login.html">Login</a>
+                                        <a href="login.jsp">Login</a>
                                     </li>
                                     <li>
-                                        <a href="register.html">Register</a>
+                                        <a href="register.jsp">Register</a>
                                     </li>
                                     <li>
-                                        <a href="logout.html">Logout</a>
+                                        <a href="logout.jsp">Logout</a>
                                     </li>
                                     <li>
-                                        <a href="recoverpw.html">Recover Password</a>
+                                        <a href="recover.jsp">Recover Password</a>
                                     </li>
                                 </ul>
                             </div>
@@ -170,7 +171,14 @@
                                     <i class="uil-user icon-size-lg rounded-circle"></i>
                                 </span>
                                     <span>
-                                        <span class="account-user-name mt-2">Kyaw Mg Mg Thu</span>
+                                        <span class="account-user-name mt-2"><%
+   									 if (session != null && session.getAttribute("username") != null) {
+        									out.print(session.getAttribute("username"));
+    								} else {
+        									response.sendRedirect("login.jsp");
+        									return; 
+    									}
+									%></span>
                                     </span>
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-end dropdown-menu-animated topbar-dropdown-menu profile-dropdown">
@@ -191,8 +199,7 @@
                         <div class="row">
                             <div class=" col-xl-12 col-lg-12">
                                 <div class="text-end my-2">
-                                         <a href="newsform.html" class="btn btn-secondary"><i class="mdi mdi-plus"></i> Add</a>
-                                   
+                                         <a href="newsform.jsp" class="btn btn-secondary"><i class="mdi mdi-plus"></i> Add</a>           
                                 </div>
                                 <div class="tab-content mt-4">
                                     <div class="tab-pane show active">
@@ -206,51 +213,60 @@
                                                     <th>Actions</th>
                                                 </tr>
                                             </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <td>1</td>
-                                                    <td class="news-title">Breaking News: AI Revolution</td>
-                                                    <td class="news-content">Artificial Intelligence is transforming industries worldwide...</td>
-                                                    <td>
-                                                        <img src="./assets/images/testing.jpeg" alt="News Photo" class="news-photo" width="100"></td>
-                                                    <td>
-                                                        <a href="newsedit.html" class="btn btn-primary btn-sm edit-btn">
-                                                            <i class="mdi mdi-pencil"></i> Edit
-                                                        </a>
-                                                        <a href="newsedit.html" class="btn btn-danger btn-sm delete-btn">
-                                                            <i class="mdi mdi-trash-can"></i> Delete
-                                                        </a>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>2</td>
-                                                    <td class="news-title">Tech Giants Collaborate</td>
-                                                    <td class="news-content">Leading tech companies are joining forces to innovate faster...</td>
-                                                    <td><img src="./assets/images/testing.jpeg" alt="News Photo" class="news-photo" width="100"></td>
-                                                    <td>
-                                                        <a href="newsedit.html" class="btn btn-primary btn-sm edit-btn">
-                                                            <i class="mdi mdi-pencil"></i> Edit
-                                                        </a>
-                                                        <a href="newsedit.html" class="btn btn-danger btn-sm delete-btn">
-                                                            <i class="mdi mdi-trash-can"></i> Delete
-                                                        </a>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>3</td>
-                                                    <td class="news-title">Climate Change Awareness</td>
-                                                    <td class="news-content">Environmentalists call for urgent action to combat climate change...</td>
-                                                    <td><img src="./assets/images/testing.jpeg" alt="News Photo" class="news-photo" width="100"></td>
-                                                    <td>
-                                                        <a href="newsedit.html" class="btn btn-primary btn-sm edit-btn">
-                                                            <i class="mdi mdi-pencil"></i> Edit
-                                                        </a>
-                                                        <a href="newsedit.html" class="btn btn-danger btn-sm delete-btn">
-                                                            <i class="mdi mdi-trash-can"></i> Delete
-                                                        </a>
-                                                    </td>
-                                                </tr>
-                                            </tbody>
+                                        <tbody>
+                                            <% 
+                                                Connection conn = null;
+                                                PreparedStatement stmt = null;
+                                                ResultSet rs = null;
+
+                                                try {
+                                                   
+                                                    Class.forName("org.mariadb.jdbc.Driver");
+
+                                                    
+                                                    conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/ODS_System", "kyawmgmgthu", "kyawmgmgthu789");
+
+                                                    
+                                                    String query = "SELECT id, title, content, photo_path FROM news";
+                                                    stmt = conn.prepareStatement(query);
+                                                    rs = stmt.executeQuery();
+
+                                                    int count = 1;
+                                                    while (rs.next()) {
+                                                        int id = rs.getInt("id");
+                                                        String title = rs.getString("title");
+                                                        String content = rs.getString("content");
+                                                        String photo = rs.getString("photo_path"); 
+                                            %>
+                                            <tr>
+                                                <td><%= count++ %></td>
+                                                <td class="news-title"><%= title %></td>
+                                                <td class="news-content"><%= content %></td>
+                                                <td>
+                                                    <img src="../news_images/<%= photo %>" alt="News Photo" class="news-photo" width="100">
+                                                </td>
+                                                <td>
+    <a href="/Disaster_Safety/Admin/newsedit.jsp?id=<%= id %>" class="btn btn-primary btn-sm edit-btn">
+        <i class="mdi mdi-pencil"></i> Edit
+    </a>
+    <a href="/Disaster_Safety/NewsDeleteServlet?id=<%= id %>" class="btn btn-danger btn-sm delete-btn" onclick="return confirm('Are you sure you want to delete this item?');">
+        <i class="mdi mdi-trash-can"></i> Delete
+    </a>
+</td>
+
+                                            </tr>
+                                            <% 
+                                                    }
+                                                } catch (Exception e) {
+                                                    out.println("<p>Error: " + e.getMessage() + "</p>");
+                                                } finally {
+                                                    // Close resources
+                                                    if (rs != null) try { rs.close(); } catch (SQLException e) { e.printStackTrace(); }
+                                                    if (stmt != null) try { stmt.close(); } catch (SQLException e) { e.printStackTrace(); }
+                                                    if (conn != null) try { conn.close(); } catch (SQLException e) { e.printStackTrace(); }
+                                                }
+                                            %>
+                                        </tbody>
                                             
                                             
                                             
@@ -276,7 +292,7 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <script>document.write(new Date().getFullYear())</script>
-                                © All Rights Reserved. Developed by Group✌🏽+☝🏽
+                               © All Rights Reserved. Developed by Group ✌🏽+☝🏽 
                             </div>
                             <div class="col-md-6">
                                 <div class="text-md-end footer-links d-none d-md-block">
