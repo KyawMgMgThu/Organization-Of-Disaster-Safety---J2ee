@@ -145,7 +145,7 @@ document.addEventListener('DOMContentLoaded', function() {
 var map = L.map('map').setView([16.8661, 96.1951], 6); // Initial view set to Myanmar
 
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            maxZoom: 25,
+            maxZoom: 100,
         }).addTo(map);
 
         var marker;
@@ -181,26 +181,6 @@ var map = L.map('map').setView([16.8661, 96.1951], 6); // Initial view set to My
                 alert("Geolocation is not supported by this browser.");
             }
         });
-
-        function sendLocation(phone, lat, lng) {
-    fetch('/location', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ phone: phone, latitude: lat, longitude: lng })
-    })
-    .then(response => response.text()) 
-    .then(text => {
-        try {
-            const data = JSON.parse(text); 
-            console.log(data);
-        } catch (error) {
-            console.error('Invalid JSON response:', text);
-        }
-    })
-    .catch(error => console.error('Error:', error));
-}
 
 
 //Map Page end

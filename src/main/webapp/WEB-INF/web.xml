@@ -61,19 +61,39 @@
 </servlet-mapping>
 
 <servlet>
-    <servlet-name>NewsUpdateServlet</servlet-name>
-    <servlet-class>auth.NewsUpdateServlet</servlet-class>
+    <servlet-name>Indanger</servlet-name>
+    <servlet-class>auth.Indanger</servlet-class>
+</servlet>
+
+<servlet-mapping>
+    <servlet-name>Indanger</servlet-name>
+    <url-pattern>/Indanger</url-pattern>
+</servlet-mapping>
+
+
+
+
+//user
+
+<servlet>
+    <servlet-name>InDangerServlet</servlet-name>
+    <servlet-class>user.InDangerServlet</servlet-class>
 </servlet>
 <servlet-mapping>
-    <servlet-name>NewsUpdateServlet</servlet-name>
-    <url-pattern>/NewsUpdateServlet</url-pattern>
+    <servlet-name>InDangerServlet</servlet-name>
+    <url-pattern>/InDangerServlet</url-pattern>
 </servlet-mapping>
+
+
+
+
 
 
 
 
 </web-app>
 </element>
+
 
 
 

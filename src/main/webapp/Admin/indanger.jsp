@@ -1,3 +1,16 @@
+<%@ page import="java.util.List" %>
+<%@ page import="java.util.ArrayList" %>
+<%@ page import="auth.model.InDanger" %>
+
+<%
+    List<InDanger> inDangerList = (List<InDanger>) session.getAttribute("inDangerList");
+    if (inDangerList == null) {
+        inDangerList = new ArrayList<>();
+    }
+%>
+<%@ page contentType="text/html; charset=UTF-8" %>
+
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -11,6 +24,7 @@
         <link href="assets/css/vendor/select.bootstrap5.css" rel="stylesheet" type="text/css" />
         <link href="assets/css/vendor/fixedHeader.bootstrap5.css" rel="stylesheet" type="text/css" />
         <link href="assets/css/vendor/fixedColumns.bootstrap5.css" rel="stylesheet" type="text/css" />
+        
         <!-- third party css end -->
 
         <!-- App css -->
@@ -194,75 +208,34 @@
                                 <div class="tab-content mt-4">
                                     <div class="tab-pane show active">
                                         <table id="datatable-buttons" class="table table-striped dt-responsive nowrap w-100">
-                                            <thead>
-                                                <tr>
-                                                    <th>No</th>
-                                                    <th>Phone Number</th>
-                                                    <th>Location (Map)</th>
-                                                    <th>Accept/Delete</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <td class="roll-no">1</td>
-                                                    <td class="phone-number">123-456-7890</td>
-                                                    <td class="location-map"><a href="https://maps.google.com/?q=40.712776,-74.005974" target="_blank">View Map</a></td>
-                                                    <td>
-                                                        <div class="btn-group">
-                                                            <button class="btn btn-success btn-sm accept-btn">Accept</button>
-                                                            <button class="btn btn-danger btn-sm delete-btn">Delete</button>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="roll-no">2</td>
-                                                    <td class="phone-number">987-654-3210</td>
-                                                    <td class="location-map"><a href="https://maps.google.com/?q=34.052235,-118.243683" target="_blank">View Map</a></td>
-                                                    <td>
-                                                        <div class="btn-group">
-                                                            <button class="btn btn-success btn-sm accept-btn">Accept</button>
-                                                            <button class="btn btn-danger btn-sm delete-btn">Delete</button>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="roll-no">3</td>
-                                                    <td class="phone-number">555-123-4567</td>
-                                                    <td class="location-map"><a href="https://maps.google.com/?q=51.507351,-0.127758" target="_blank">View Map</a></td>
-                                                    <td>
-                                                        <div class="btn-group">
-                                                            <button class="btn btn-success btn-sm accept-btn">Accept</button>
-                                                            <button class="btn btn-danger btn-sm delete-btn">Delete</button>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="roll-no">4</td>
-                                                    <td class="phone-number">321-654-9870</td>
-                                                    <td class="location-map"><a href="https://maps.google.com/?q=48.856613,2.352222" target="_blank">View Map</a></td>
-                                                    <td>
-                                                        <div class="btn-group">
-                                                            <button class="btn btn-success btn-sm accept-btn">Accept</button>
-                                                            <button class="btn btn-danger btn-sm delete-btn">Delete</button>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="roll-no">5</td>
-                                                    <td class="phone-number">222-333-4444</td>
-                                                    <td class="location-map"><a href="https://maps.google.com/?q=35.689487,139.691711" target="_blank">View Map</a></td>
-                                                    <td>
-                                                        <div class="btn-group">
-                                                            <button class="btn btn-success btn-sm accept-btn">Accept</button>
-                                                            <button class="btn btn-danger btn-sm delete-btn">Delete</button>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                            
-                                            
-                                            
-                                        </table>                                           
+                                        <thead>
+                                            <tr>
+                                                <th>No</th>
+                                                <th>Phone Number</th>
+                                                <th>Case</th>
+                                                <th>Location (Map)</th>
+                                                <th>Accept/Delete</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <% for (InDanger inDanger : inDangerList) { %>
+                                        <tr>
+                                            <td><%= inDanger.getId() %></td>
+                                            <td><%= inDanger.getPhoneNumber() %></td>
+                                            <td><%= inDanger.getCaseType() %></td>
+                                            <td><a href="map.html?q=<%= inDanger.getLocation() %>" target="_blank">View Map</a></td>
+                                            <td>
+                                                <!-- Placeholder for Accept/Delete actions -->
+                                                <form action="acceptDelete" method="post">
+                                                    <input type="hidden" name="id" value="<%= inDanger.getId() %>">
+                                                    <button type="submit" name="action" value="accept" class="btn btn-success">Accept</button>
+                                                    <button type="submit" name="action" value="delete" class="btn btn-danger">Delete</button>
+                                                </form>
+                                            </td>
+                                        </tr>
+                                        <% } %>
+                                        </tbody>
+                                    </table>                                 
                                     </div> <!-- end preview-->
                                 
                                 <!-- end row -->
@@ -284,7 +257,7 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <script>document.write(new Date().getFullYear())</script>
-                                © All Rights Reserved. Developed by Group✌🏽+☝🏽
+                                Â© All Rights Reserved. Developed by Groupâð½+âð½
                             </div>
                             <div class="col-md-6">
                                 <div class="text-md-end footer-links d-none d-md-block">
@@ -450,6 +423,7 @@
 
         <!-- demo app -->
         <script src="assets/js/pages/demo.datatable-init.js"></script>
+       
     </body>
 
 </html>
