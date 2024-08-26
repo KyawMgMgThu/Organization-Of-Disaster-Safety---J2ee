@@ -1,5 +1,9 @@
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.ArrayList" %>
+<%@ page import="java.sql.Connection" %>
+<%@ page import="java.sql.DriverManager" %>
+<%@ page import="java.sql.PreparedStatement" %>
+<%@ page import="java.sql.ResultSet" %>
 <%@ page import="auth.model.InDanger" %>
 
 <%
@@ -7,11 +11,46 @@
     if (inDangerList == null) {
         inDangerList = new ArrayList<>();
     }
-%>
-<%@ page contentType="text/html; charset=UTF-8" %>
 
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+    int inDangerCount = 0;
+    int newsCount = 0;
+
+    Connection conn = null;
+    PreparedStatement stmt = null;
+    ResultSet rs = null;
+
+    try {
+        Class.forName("org.mariadb.jdbc.Driver");
+        conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/ODS_System", "kyawmgmgthu", "kyawmgmgthu789");
+
+        // Count for In_Danger
+        String inDangerQuery = "SELECT COUNT(*) FROM In_Danger";
+        stmt = conn.prepareStatement(inDangerQuery);
+        rs = stmt.executeQuery();
+        if (rs.next()) {
+            inDangerCount = rs.getInt(1);
+        }
+
+        // Count for News
+        String newsQuery = "SELECT COUNT(*) FROM news";
+        stmt = conn.prepareStatement(newsQuery);
+        rs = stmt.executeQuery();
+        if (rs.next()) {
+            newsCount = rs.getInt(1);
+        }
+
+        // Set counts as request attributes
+        request.setAttribute("inDangerCount", inDangerCount);
+        request.setAttribute("newsCount", newsCount);
+
+    } catch (Exception e) {
+        e.printStackTrace();
+    } finally {
+        if (rs != null) try { rs.close(); } catch (Exception e) { e.printStackTrace(); }
+        if (stmt != null) try { stmt.close(); } catch (Exception e) { e.printStackTrace(); }
+        if (conn != null) try { conn.close(); } catch (Exception e) { e.printStackTrace(); }
+    }
+%>
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -50,41 +89,41 @@
                     <ul class="side-nav">
                         <li class="side-nav-title side-nav-item">Navigation</li>
                         <li class="side-nav-item">
-                            <a
-                                data-bs-toggle="collapse"
-                                href="index.html"
-                                aria-expanded="false"
-                                aria-controls="sidebarDashboards"
-                                class="side-nav-link"
-                            >
-                                <i class="uil-home-alt"></i>
-                                <span> Dashboards</span>
-                            </a>
+                            <a href="index.jsp" class="side-nav-link">
+                            <i class="uil-home-alt"></i>
+                            <span> Dashboards</span>
+                        </a>
                         </li>
                         <li class="side-nav-item">
-                            <a href="news.html" class="side-nav-link">
+                            <a href="news.jsp" class="side-nav-link">
                                 <i class="mdi mdi-newspaper"></i>
                                 <span> News</span>
                             </a>
                         </li>
                         <li class="side-nav-item">
-                            <a href="indanger.html" class="side-nav-link">
+                            <a href="case.jsp" class="side-nav-link">
+                                <i class="mdi mdi-heart-pulse"></i>
+                                <span>Case</span>
+                            </a>
+                        </li>
+                        <li class="side-nav-item">
+                            <a href="indanger.jsp" class="side-nav-link">
                                 <i class="mdi mdi-car-emergency"></i>
                                 <span>In Danger</span>
                             </a>
                         </li>
                         <li class="side-nav-item">
                             <a
-                                href="map.html"
+                                href="map.jsp"
                                 class="side-nav-link"
                             >
-                                <i class="uil-location-point"></i>
+                                <i class="mdi mdi-map-marker-radius"></i>
                                 <span> Maps</span>
                             </a>
                         </li>
                         <li class="side-nav-item">
                             <a
-                                href="admin.html"
+                                href="admin.jsp"
                                 class="side-nav-link"
                             >
                                 <i class="uil-user"></i>
@@ -106,16 +145,16 @@
                             <div class="collapse" id="sidebarPagesAuth">
                                 <ul class="side-nav-third-level">
                                     <li>
-                                        <a href="login.html">Login</a>
+                                        <a href="login.jsp">Login</a>
                                     </li>
                                     <li>
-                                        <a href="register.html">Register</a>
+                                        <a href="register.jsp">Register</a>
                                     </li>
                                     <li>
-                                        <a href="logout.html">Logout</a>
+                                        <a href="/Disaster_Safety/LogoutServlet">Logout</a>
                                     </li>
                                     <li>
-                                        <a href="recover.html">Recover Password</a>
+                                        <a href="recover.jsp">Recover Password</a>
                                     </li>
                                 </ul>
                             </div>
@@ -198,12 +237,19 @@
                                     <i class="uil-user icon-size-lg rounded-circle"></i>
                                 </span>
                                     <span>
-                                        <span class="account-user-name mt-2">Kyaw Mg Mg Thu</span>
+                                       <span class="account-user-name mt-2"><%
+   									 if (session != null && session.getAttribute("username") != null) {
+        									out.print(session.getAttribute("username"));
+    								} else {
+        									response.sendRedirect("login.jsp");
+        									return; 
+    									}
+									%></span>
                                     </span>
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-end dropdown-menu-animated topbar-dropdown-menu profile-dropdown">
                                     <!-- item-->
-                                    <a href="javascript:void(0);" class="dropdown-item notify-item">
+                                    <a href="/Disaster_Safety/LogoutServlet" class="dropdown-item notify-item">
                                         <i class="mdi mdi-logout me-1"></i>
                                         <span>Logout</span>
                                     </a>
@@ -227,7 +273,7 @@
                                                     <i class="mdi mdi-newspaper"></i>
                                                 </div>
                                                 <h5 class="text-muted fw-normal mt-0" title="Number of News">Total News</h5>
-                                                <h3 class="mt-3 mb-3">300+</h3>
+                                                  <h3 class="mt-3 mb-3"><%= request.getAttribute("newsCount") %></h3>
                                             </div>
                                             <!-- end card-body-->
                                         </div>
@@ -241,7 +287,7 @@
                                                     <i class="mdi mdi-medical-bag"></i>
                                                 </div>
                                                 <h5 class="text-muted fw-normal mt-0" title="Number of Dengerous">To People Asking For Help </h5>
-                                                <h3 class="mt-3 mb-3">5,543</h3>
+                                                <h3 class="mt-3 mb-3"><%= request.getAttribute("inDangerCount") %></h3>
                                             </div>
                                             <!-- end card-body-->
                                         </div>
@@ -270,7 +316,7 @@
                                                         <th>Phone Number</th>
                                                         <th>Case</th>
                                                         <th>Location (Map)</th>
-                                                        <th>Accept/Delete</th>
+                                                        <th>Delete</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -282,9 +328,8 @@
                                             <td><a href="map.html?q=<%= inDanger.getLocation() %>" target="_blank">View Map</a></td>
                                             <td>
                                                 <!-- Placeholder for Accept/Delete actions -->
-                                                <form action="acceptDelete" method="post">
+                                                <form action="/Disaster_Safety/DeleteInDangerServlet" method="post">
                                                     <input type="hidden" name="id" value="<%= inDanger.getId() %>">
-                                                    <button type="submit" name="action" value="accept" class="btn btn-success">Accept</button>
                                                     <button type="submit" name="action" value="delete" class="btn btn-danger">Delete</button>
                                                 </form>
                                             </td>

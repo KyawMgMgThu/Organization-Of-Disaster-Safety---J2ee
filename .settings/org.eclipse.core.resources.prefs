@@ -1,6 +1,10 @@
 eclipse.preferences.version=1
 encoding//src/main/webapp/Admin/admin.jsp=UTF-8
 encoding//src/main/webapp/Admin/adminedit.jsp=UTF-8
+encoding//src/main/webapp/Admin/case.jsp=UTF-8
+encoding//src/main/webapp/Admin/caseedit.jsp=UTF-8
+encoding//src/main/webapp/Admin/index.jsp=UTF-8
+encoding//src/main/webapp/Admin/map.jsp=UTF-8
 encoding//src/main/webapp/Admin/news.jsp=UTF-8
 encoding//src/main/webapp/Admin/newsedit.jsp=UTF-8
 encoding//src/main/webapp/User/inDanger.jsp=UTF-8

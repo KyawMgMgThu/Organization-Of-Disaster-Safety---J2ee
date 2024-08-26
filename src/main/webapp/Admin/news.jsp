@@ -26,7 +26,7 @@
         data-layout-mode="fluid"
         data-rightbar-onstart="true"
     >
-        <!-- Begin page -->
+         <!-- Begin page -->
         <div class="wrapper">
             <!-- ========== Left Sidebar Start ========== -->
             <div class="leftside-menu">
@@ -40,9 +40,9 @@
                         <li class="side-nav-title side-nav-item">Navigation</li>
                         <li class="side-nav-item">
                             <a href="index.jsp" class="side-nav-link">
-                                <i class="uil-home-alt"></i>
-                                <span> Dashboards</span>
-                            </a>
+                            <i class="uil-home-alt"></i>
+                            <span> Dashboards</span>
+                        </a>
                         </li>
                         <li class="side-nav-item">
                             <a href="news.jsp" class="side-nav-link">
@@ -51,7 +51,13 @@
                             </a>
                         </li>
                         <li class="side-nav-item">
-                            <a href="indanger.html" class="side-nav-link">
+                            <a href="case.jsp" class="side-nav-link">
+                                <i class="mdi mdi-heart-pulse"></i>
+                                <span>Case</span>
+                            </a>
+                        </li>
+                        <li class="side-nav-item">
+                            <a href="indanger.jsp" class="side-nav-link">
                                 <i class="mdi mdi-car-emergency"></i>
                                 <span>In Danger</span>
                             </a>
@@ -61,7 +67,7 @@
                                 href="map.jsp"
                                 class="side-nav-link"
                             >
-                                <i class="uil-location-point"></i>
+                                <i class="mdi mdi-map-marker-radius"></i>
                                 <span> Maps</span>
                             </a>
                         </li>
@@ -95,7 +101,7 @@
                                         <a href="register.jsp">Register</a>
                                     </li>
                                     <li>
-                                        <a href="logout.jsp">Logout</a>
+                                        <a href="/Disaster_Safety/LogoutServlet">Logout</a>
                                     </li>
                                     <li>
                                         <a href="recover.jsp">Recover Password</a>
@@ -125,7 +131,17 @@
                                     aria-expanded="false"
                                 >
                                     <i class="dripicons-search noti-icon"></i>
-                            </a>
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-animated dropdown-lg p-0">
+                                    <form class="p-3">
+                                        <input
+                                            type="text"
+                                            class="form-control"
+                                            placeholder="Search ..."
+                                            aria-label="Recipient's username"
+                                        >
+                                    </form>
+                                </div>
                             </li>
                             <li class="dropdown notification-list">
                                 <a
@@ -171,7 +187,7 @@
                                     <i class="uil-user icon-size-lg rounded-circle"></i>
                                 </span>
                                     <span>
-                                        <span class="account-user-name mt-2"><%
+                                       <span class="account-user-name mt-2"><%
    									 if (session != null && session.getAttribute("username") != null) {
         									out.print(session.getAttribute("username"));
     								} else {
@@ -182,7 +198,8 @@
                                     </span>
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-end dropdown-menu-animated topbar-dropdown-menu profile-dropdown">
-                                    <a href="javascript:void(0);" class="dropdown-item notify-item">
+                                    <!-- item-->
+                                    <a href="/Disaster_Safety/LogoutServlet" class="dropdown-item notify-item">
                                         <i class="mdi mdi-logout me-1"></i>
                                         <span>Logout</span>
                                     </a>

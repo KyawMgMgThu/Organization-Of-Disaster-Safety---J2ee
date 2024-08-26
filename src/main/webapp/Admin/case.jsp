@@ -1,29 +1,31 @@
+
 <%@ page import="java.sql.*, javax.servlet.*, javax.servlet.http.*" %>
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="utf-8">
-    <title>ODS | Admin</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Include CSS files -->
-    <link href="assets/css/vendor/dataTables.bootstrap5.css" rel="stylesheet" type="text/css" />
-    <link href="assets/css/vendor/responsive.bootstrap5.css" rel="stylesheet" type="text/css" />
-    <link href="assets/css/vendor/buttons.bootstrap5.css" rel="stylesheet" type="text/css" />
-    <link href="assets/css/vendor/select.bootstrap5.css" rel="stylesheet" type="text/css" />
-    <link href="assets/css/vendor/fixedHeader.bootstrap5.css" rel="stylesheet" type="text/css" />
-    <link href="assets/css/vendor/fixedColumns.bootstrap5.css" rel="stylesheet" type="text/css" />
-    <link href="assets/css/icons.min.css" rel="stylesheet" type="text/css" />
-    <link href="assets/css/app.min.css" rel="stylesheet" type="text/css" id="app-style"/>
-    <link rel="stylesheet" href="assets/css/style.css">
-</head>
- <body
-    class="loading"
-    data-layout-color="light"
-    data-leftbar-theme="dark"
-    data-layout-mode="fluid"
-    data-rightbar-onstart="true"
->
-     <!-- Begin page -->
+    <head>
+        <meta charset="utf-8">
+        <title>ODS | Dashboard</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <!-- third party css -->
+        <link href="assets/css/vendor/jquery-jvectormap-1.2.2.css" rel="stylesheet" type="text/css">
+        <!-- App css -->
+        <link href="assets/css/icons.min.css" rel="stylesheet" type="text/css">
+        <link
+            href="assets/css/app.min.css"
+            rel="stylesheet"
+            type="text/css"
+            id="app-style"
+        >
+        <link rel="stylesheet" href="assets/css/style.css">
+    </head>
+    <body
+        class="loading"
+        data-layout-color="light"
+        data-leftbar-theme="dark"
+        data-layout-mode="fluid"
+        data-rightbar-onstart="true"
+    >
+        <!-- Begin page -->
         <div class="wrapper">
             <!-- ========== Left Sidebar Start ========== -->
             <div class="leftside-menu">
@@ -208,58 +210,70 @@
                         </button>
                     </div>
                     <!-- end Topbar -->
-            <div class="container-fluid">
+                    <div class="container-fluid">
                 <div class="row">
                     <div class="col-xl-12 col-lg-12">
+                    <div class="text-end my-2">
+                                         <a href="case-form.jsp" class="btn btn-secondary"><i class="mdi mdi-plus"></i> Add</a>           
+                                </div>
                         <div class="tab-content mt-4">
                             <div class="tab-pane show active">
                                 <table id="datatable-buttons" class="table table-striped dt-responsive nowrap w-100">
                                     <thead>
                                         <tr>
                                             <th>No</th>
-                                            <th>Name</th>
-                                            <th>Email</th>
-                                            <th>Start Date</th>
-                                            <th>Actions</th>
+                                            <th>Case Name</th>
+                                            <th>Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <%
-                                            Connection conn = null;
-                                            Statement stmt = null;
-                                            ResultSet rs = null;
-                                            try {
-                                            	Class.forName("org.mariadb.jdbc.Driver");
-                                                conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/ODS_System", "kyawmgmgthu", "kyawmgmgthu789");
-                                                stmt = conn.createStatement();
-                                                String query = "SELECT * FROM users";
-                                                rs = stmt.executeQuery(query);
-                                                int count = 1;
-                                                while (rs.next()) {
-                                                    out.println("<tr>");
-                                                    out.println("<td>" + count + "</td>");
-                                                    out.println("<td>" + rs.getString("name") + "</td>");
-                                                    out.println("<td>" + rs.getString("email") + "</td>");
-                                                    out.println("<td>" + rs.getDate("start_date") + "</td>");
-                                                    out.println("<td>");
-                                                    out.println("<a href='adminedit.jsp?id=" + rs.getInt("id") + "' class='btn btn-primary btn-sm edit-btn'>");
-                                                    out.println("<i class='mdi mdi-pencil'></i> Edit");
-                                                    out.println("</a>");
-                                                    out.println("<button class='btn btn-danger btn-sm delete-btn' onclick='deleteUser(" + rs.getInt("id") + ")'>");
-                                                    out.println("<i class='mdi mdi-trash-can'></i> Delete");
-                                                    out.println("</button>");
-                                                    out.println("</td>");
-                                                    out.println("</tr>");
-                                                    count++;
+                                       <% 
+                                                Connection conn = null;
+                                                PreparedStatement stmt = null;
+                                                ResultSet rs = null;
+
+                                                try {
+                                                   
+                                                    Class.forName("org.mariadb.jdbc.Driver");
+
+                                                    
+                                                    conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/ODS_System", "kyawmgmgthu", "kyawmgmgthu789");
+
+                                                    
+                                                    String query = "SELECT id, case_name FROM `Case`";
+                                                    stmt = conn.prepareStatement(query);
+                                                    rs = stmt.executeQuery();
+
+                                                    int count = 1;
+                                                    while (rs.next()) {
+                                                        int id = rs.getInt("id");
+                                                        String case_name = rs.getString("case_name");
+                                                       
+                                            %>
+                                            <tr>
+                                                <td><%= count++ %></td>
+                                                <td class="news-title"><%= case_name %></td>
+                                                <td>
+    <a href="/Disaster_Safety/Admin/caseedit.jsp?id=<%= id %>" class="btn btn-primary btn-sm edit-btn">
+        <i class="mdi mdi-pencil"></i> Edit
+    </a>
+    <a href="/Disaster_Safety/CaseDeleteServlet?id=<%= id %>" class="btn btn-danger btn-sm delete-btn" onclick="return confirm('Are you sure you want to delete this item?');">
+        <i class="mdi mdi-trash-can"></i> Delete
+    </a>
+</td>
+
+                                            </tr>
+                                            <% 
+                                                    }
+                                                } catch (Exception e) {
+                                                    out.println("<p>Error: " + e.getMessage() + "</p>");
+                                                } finally {
+                                                    // Close resources
+                                                    if (rs != null) try { rs.close(); } catch (SQLException e) { e.printStackTrace(); }
+                                                    if (stmt != null) try { stmt.close(); } catch (SQLException e) { e.printStackTrace(); }
+                                                    if (conn != null) try { conn.close(); } catch (SQLException e) { e.printStackTrace(); }
                                                 }
-                                            } catch (Exception e) {
-                                                e.printStackTrace();
-                                            } finally {
-                                                if (rs != null) try { rs.close(); } catch (SQLException e) { e.printStackTrace(); }
-                                                if (stmt != null) try { stmt.close(); } catch (SQLException e) { e.printStackTrace(); }
-                                                if (conn != null) try { conn.close(); } catch (SQLException e) { e.printStackTrace(); }
-                                            }
-                                        %>
+                                            %>
                                     </tbody>
                                 </table>
                             </div>
@@ -270,27 +284,34 @@
         </div>
     </div>
     </div>
-
-
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-md-6">
+                    
+                  
+                <!-- Footer Start -->
+                <footer class="footer">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-md-6">
                                 <script>document.write(new Date().getFullYear())</script>
-                                © All Rights Reserved. Developed by Group ✌🏽+☝🏽 
+                               	© All Rights Reserved. Developed by Group ✌🏽+☝🏽 
                             </div>
-                <div class="col-md-6">
-                    <div class="text-md-end footer-links d-none d-md-block">
-                        <a href="about.html">About</a>
-                        <a href="contact.html">Contact Us</a>
+                            <div class="col-md-6">
+                                <div class="text-md-end footer-links d-none d-md-block">
+                                    <a href="about.html">About</a>
+                                    <a href="contact.html">Contact Us</a>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                </div>
+                </footer>
+                <!-- end Footer -->
+                
             </div>
+            <!-- ============================================================== -->
+            <!-- End Page content -->
+            <!-- ============================================================== -->
         </div>
-    </footer>
-    
-    <!-- Right Sidebar -->
+        <!-- END wrapper -->
+        <!-- Right Sidebar -->
         <div class="end-bar">
             <div class="rightbar-title">
                 <a href="javascript:void(0);" class="end-bar-toggle float-end">
@@ -420,9 +441,7 @@
         </div>
         <div class="rightbar-overlay"></div>
         <!-- /End-bar -->
-
-    <!-- Include JS files -->
-    <script src="assets/js/vendor.min.js"></script>
+         <script src="assets/js/vendor.min.js"></script>
     <script src="assets/js/app.min.js"></script>
     <script src="assets/js/vendor/jquery.dataTables.min.js"></script>
     <script src="assets/js/vendor/dataTables.bootstrap5.js"></script>
@@ -436,36 +455,6 @@
     <script src="assets/js/vendor/fixedHeader.bootstrap5.min.js"></script>
     <script src="assets/js/pages/demo.datatable-init.js"></script>
     <script src="assets/js/script.js"></script>
-    <script>
-   
+    </body>
 
-    function deleteUser(userId) {
-        if (confirm('Are you sure you want to delete this user?')) {
-            fetch('/Disaster_Safety/DeleteUserServlet', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded'
-                },
-                body: new URLSearchParams({
-                    'userId': userId
-                })
-            })
-            .then(response => response.text())
-            .then(result => {
-                console.log('Delete Result:', result); 
-                if (result === 'Success') {
-                    location.reload();
-                } else {
-                    alert(result); 
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('Error occurred while deleting user.');
-            });
-        }
-    }
-</script>
-
-</body>
 </html>

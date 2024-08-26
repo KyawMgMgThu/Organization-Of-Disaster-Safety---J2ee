@@ -25,155 +25,168 @@
     data-leftbar-theme="dark"
     data-layout-mode="fluid"
     data-rightbar-onstart="true"
->
- 		  <!-- Begin page -->
-    <div class="wrapper">
-        <!-- ========== Left Sidebar Start ========== -->
-        <div class="leftside-menu">
-            <!-- LOGO -->
-            <a href="index.html" class="logo text-center logo-light">
-
-            </a>
-            <div class="h-100" id="leftside-menu-container" data-simplebar>
-                <!--- Sidemenu -->
-                <ul class="side-nav">
-                    <li class="side-nav-title side-nav-item">Navigation</li>
-                    <li class="side-nav-item">
-                        <a href="index.jsp" class="side-nav-link">
+>  <!-- Begin page -->
+        <div class="wrapper">
+            <!-- ========== Left Sidebar Start ========== -->
+            <div class="leftside-menu">
+                <!-- LOGO -->
+                <a href="index.html" class="logo text-center logo-light">
+    
+                </a>
+                <div class="h-100" id="leftside-menu-container" data-simplebar>
+                    <!--- Sidemenu -->
+                    <ul class="side-nav">
+                        <li class="side-nav-title side-nav-item">Navigation</li>
+                        <li class="side-nav-item">
+                            <a href="index.jsp" class="side-nav-link">
                             <i class="uil-home-alt"></i>
                             <span> Dashboards</span>
                         </a>
-                    </li>
-                    <li class="side-nav-item">
-                        <a href="news.jsp" class="side-nav-link">
-                            <i class="mdi mdi-newspaper"></i>
-                            <span> News</span>
-                        </a>
-                    </li>
-                    <li class="side-nav-item">
-                        <a href="indanger.jsp" class="side-nav-link">
-                            <i class="mdi mdi-car-emergency"></i>
-                            <span>In Danger</span>
-                        </a>
-                    </li>
-                    <li class="side-nav-item">
-                        <a
-                            href="map.jsp"
-                            class="side-nav-link"
-                        >
-                            <i class="uil-location-point"></i>
-                            <span> Maps</span>
-                        </a>
-                    </li>
-                    <li class="side-nav-item">
-                        <a
-                            href="admin.jsp"
-                            class="side-nav-link"
-                        >
-                            <i class="uil-user"></i>
-                            <span>Admin</span>
-                        </a>
-                    </li>
-                    <li class="side-nav-item">
-                        <a
-                            data-bs-toggle="collapse"
-                            href="#sidebarPagesAuth"
-                            aria-expanded="false"
-                            aria-controls="sidebarPagesAuth"
-                            class="side-nav-link"
-                        >
-                            <i class="uil-copy-alt"></i>
-                            <span> Authentication</span>
-                            <span class="menu-arrow"></span>
-                        </a>
-                        <div class="collapse" id="sidebarPagesAuth">
-                            <ul class="side-nav-third-level">
-                                <li>
-                                    <a href="login.jsp">Login</a>
-                                </li>
-                                <li>
-                                    <a href="register.jsp">Register</a>
-                                </li>
-                                <li>
-                                    <a href="logout.jsp">Logout</a>
-                                </li>
-                                <li>
-                                    <a href="recoverpw.jsp">Recover Password</a>
-                                </li>
-                            </ul>
-                        </div>
-                    </li>
-                    
-                </ul>
-                <!-- End Sidebar -->
-                <div class="clearfix"></div>
-            </div>
-            <!-- Sidebar -left -->
-        </div>
-  
-        
-        <div class="content-page">
-            <div class="content">
-                <!-- Topbar Start -->
-                <div class="navbar-custom">
-                <ul class="list-unstyled topbar-menu float-end mb-0">
-                    <li class="dropdown notification-list d-lg-none">
-                        <a
-                            class="nav-link dropdown-toggle arrow-none"
-                            data-bs-toggle="dropdown"
-                            href="#"
-                            role="button"
-                            aria-haspopup="false"
-                            aria-expanded="false"
-                        >
-                            <i class="dripicons-search noti-icon"></i>
-                    </a>
-                    </li>
-                    <li class="dropdown notification-list">
-                        <a
-                            class="nav-link dropdown-toggle arrow-none"
-                            data-bs-toggle="dropdown"
-                            href="#"
-                            role="button"
-                            aria-haspopup="false"
-                            aria-expanded="false"
-                        >
-                            <i class="dripicons-bell noti-icon"></i>
-                            <span class="noti-icon-badge"></span>
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-end dropdown-menu-animated dropdown-lg">
-                            <!-- item-->
-                            <div class="dropdown-item noti-title px-3">
-                                <h5 class="m-0">
-                                    <span class="float-end">
-                                        <a href="javascript: void(0);" class="text-dark">
-                                            <small>Clear All</small>
-                                        </a>
-                                    </span>
-                                    Notification
-                                </h5>
+                        </li>
+                        <li class="side-nav-item">
+                            <a href="news.jsp" class="side-nav-link">
+                                <i class="mdi mdi-newspaper"></i>
+                                <span> News</span>
+                            </a>
+                        </li>
+                        <li class="side-nav-item">
+                            <a href="case.jsp" class="side-nav-link">
+                                <i class="mdi mdi-heart-pulse"></i>
+                                <span>Case</span>
+                            </a>
+                        </li>
+                        <li class="side-nav-item">
+                            <a href="indanger.jsp" class="side-nav-link">
+                                <i class="mdi mdi-car-emergency"></i>
+                                <span>In Danger</span>
+                            </a>
+                        </li>
+                        <li class="side-nav-item">
+                            <a
+                                href="map.jsp"
+                                class="side-nav-link"
+                            >
+                                <i class="mdi mdi-map-marker-radius"></i>
+                                <span> Maps</span>
+                            </a>
+                        </li>
+                        <li class="side-nav-item">
+                            <a
+                                href="admin.jsp"
+                                class="side-nav-link"
+                            >
+                                <i class="uil-user"></i>
+                                <span>Admin</span>
+                            </a>
+                        </li>
+                        <li class="side-nav-item">
+                            <a
+                                data-bs-toggle="collapse"
+                                href="#sidebarPagesAuth"
+                                aria-expanded="false"
+                                aria-controls="sidebarPagesAuth"
+                                class="side-nav-link"
+                            >
+                                <i class="uil-copy-alt"></i>
+                                <span> Authentication</span>
+                                <span class="menu-arrow"></span>
+                            </a>
+                            <div class="collapse" id="sidebarPagesAuth">
+                                <ul class="side-nav-third-level">
+                                    <li>
+                                        <a href="login.jsp">Login</a>
+                                    </li>
+                                    <li>
+                                        <a href="register.jsp">Register</a>
+                                    </li>
+                                    <li>
+                                        <a href="/Disaster_Safety/LogoutServlet">Logout</a>
+                                    </li>
+                                    <li>
+                                        <a href="recover.jsp">Recover Password</a>
+                                    </li>
+                                </ul>
                             </div>
-                        </div>
-                    </li>
-                    <li class="notification-list">
-                        <a class="nav-link end-bar-toggle" href="javascript: void(0);">
-                            <i class="dripicons-gear noti-icon"></i>
-                        </a>
-                    </li>
-                    <li class="dropdown notification-list">
-                        <a
-                            class="nav-link dropdown-toggle nav-user arrow-none me-0"
-                            data-bs-toggle="dropdown"
-                            href="#"
-                            role="button"
-                            aria-haspopup="false"
-                            aria-expanded="false"
-                        >
-                        <span class="account-user-avatar">
-                            <i class="uil-user icon-size-lg rounded-circle"></i>
-                        </span>
-                            <span>
-                                <span class="account-user-name mt-2"><%
+                        </li>
+                        
+                    </ul>
+                    <!-- End Sidebar -->
+                    <div class="clearfix"></div>
+                </div>
+                <!-- Sidebar -left -->
+            </div>
+            <div class="content-page">
+                <div class="content">
+                    <!-- Topbar Start -->
+                    <div class="navbar-custom">
+                        <ul class="list-unstyled topbar-menu float-end mb-0">
+                            <li class="dropdown notification-list d-lg-none">
+                                <a
+                                    class="nav-link dropdown-toggle arrow-none"
+                                    data-bs-toggle="dropdown"
+                                    href="#"
+                                    role="button"
+                                    aria-haspopup="false"
+                                    aria-expanded="false"
+                                >
+                                    <i class="dripicons-search noti-icon"></i>
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-animated dropdown-lg p-0">
+                                    <form class="p-3">
+                                        <input
+                                            type="text"
+                                            class="form-control"
+                                            placeholder="Search ..."
+                                            aria-label="Recipient's username"
+                                        >
+                                    </form>
+                                </div>
+                            </li>
+                            <li class="dropdown notification-list">
+                                <a
+                                    class="nav-link dropdown-toggle arrow-none"
+                                    data-bs-toggle="dropdown"
+                                    href="#"
+                                    role="button"
+                                    aria-haspopup="false"
+                                    aria-expanded="false"
+                                >
+                                    <i class="dripicons-bell noti-icon"></i>
+                                    <span class="noti-icon-badge"></span>
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-end dropdown-menu-animated dropdown-lg">
+                                    <!-- item-->
+                                    <div class="dropdown-item noti-title px-3">
+                                        <h5 class="m-0">
+                                            <span class="float-end">
+                                                <a href="javascript: void(0);" class="text-dark">
+                                                    <small>Clear All</small>
+                                                </a>
+                                            </span>
+                                            Notification
+                                        </h5>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="notification-list">
+                                <a class="nav-link end-bar-toggle" href="javascript: void(0);">
+                                    <i class="dripicons-gear noti-icon"></i>
+                                </a>
+                            </li>
+                            <li class="dropdown notification-list">
+                                <a
+                                    class="nav-link dropdown-toggle nav-user arrow-none me-0"
+                                    data-bs-toggle="dropdown"
+                                    href="#"
+                                    role="button"
+                                    aria-haspopup="false"
+                                    aria-expanded="false"
+                                >
+                                <span class="account-user-avatar">
+                                    <i class="uil-user icon-size-lg rounded-circle"></i>
+                                </span>
+                                    <span>
+                                       <span class="account-user-name mt-2"><%
    									 if (session != null && session.getAttribute("username") != null) {
         									out.print(session.getAttribute("username"));
     								} else {
@@ -181,26 +194,22 @@
         									return; 
     									}
 									%></span>
-                            </span>
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-end dropdown-menu-animated topbar-dropdown-menu profile-dropdown">
-                           <form action="/Disaster_Safety/LogoutServlet" method="get">
-    <button type="submit" class="dropdown-item notify-item">
-        <i class="mdi mdi-logout me-1"></i>
-        <span>Logout</span>
-    </button>
-</form>
-
-                        </div>
-                    </li>
-                </ul>
-                <button class="button-menu-mobile open-left">
-                    <i class="mdi mdi-menu"></i>
-                </button>
-             
-            </div>
-                <!-- Topbar content here -->
-                <!-- end Topbar -->
+                                    </span>
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-end dropdown-menu-animated topbar-dropdown-menu profile-dropdown">
+                                    <!-- item-->
+                                    <a href="/Disaster_Safety/LogoutServlet" class="dropdown-item notify-item">
+                                        <i class="mdi mdi-logout me-1"></i>
+                                        <span>Logout</span>
+                                    </a>
+                                </div>
+                            </li>
+                        </ul>
+                        <button class="button-menu-mobile open-left">
+                            <i class="mdi mdi-menu"></i>
+                        </button>
+                    </div>
+                    <!-- end Topbar -->
                 <!-- Start Content-->
                 <div class="container-fluid">
                     <div class="row">

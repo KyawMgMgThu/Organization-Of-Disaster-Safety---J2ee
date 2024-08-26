@@ -6,7 +6,7 @@ public class InDanger {
     private int caseType;
     private String location;
 
-    // Getters and setters
+
     public int getId() {
         return id;
     }

@@ -52,35 +52,41 @@
                     <ul class="side-nav">
                         <li class="side-nav-title side-nav-item">Navigation</li>
                         <li class="side-nav-item">
-                            <a href="index.html" class="side-nav-link">
-                                <i class="uil-home-alt"></i>
-                                <span> Dashboards</span>
-                            </a>
+                            <a href="index.jsp" class="side-nav-link">
+                            <i class="uil-home-alt"></i>
+                            <span> Dashboards</span>
+                        </a>
                         </li>
                         <li class="side-nav-item">
-                            <a href="news.html" class="side-nav-link">
+                            <a href="news.jsp" class="side-nav-link">
                                 <i class="mdi mdi-newspaper"></i>
                                 <span> News</span>
                             </a>
                         </li>
                         <li class="side-nav-item">
-                            <a href="indanger.html" class="side-nav-link">
+                            <a href="case.jsp" class="side-nav-link">
+                                <i class="mdi mdi-heart-pulse"></i>
+                                <span>Case</span>
+                            </a>
+                        </li>
+                        <li class="side-nav-item">
+                            <a href="/Disaster_Safety/Indanger" class="side-nav-link">
                                 <i class="mdi mdi-car-emergency"></i>
                                 <span>In Danger</span>
                             </a>
                         </li>
                         <li class="side-nav-item">
                             <a
-                                href="map.html"
+                                href="map.jsp"
                                 class="side-nav-link"
                             >
-                                <i class="uil-location-point"></i>
+                                <i class="mdi mdi-map-marker-radius"></i>
                                 <span> Maps</span>
                             </a>
                         </li>
                         <li class="side-nav-item">
                             <a
-                                href="admin.html"
+                                href="admin.jsp"
                                 class="side-nav-link"
                             >
                                 <i class="uil-user"></i>
@@ -102,16 +108,16 @@
                             <div class="collapse" id="sidebarPagesAuth">
                                 <ul class="side-nav-third-level">
                                     <li>
-                                        <a href="login.html">Login</a>
+                                        <a href="login.jsp">Login</a>
                                     </li>
                                     <li>
-                                        <a href="register.html">Register</a>
+                                        <a href="register.jsp">Register</a>
                                     </li>
                                     <li>
-                                        <a href="logout.html">Logout</a>
+                                        <a href="/Disaster_Safety/LogoutServlet">Logout</a>
                                     </li>
                                     <li>
-                                        <a href="recoverpw.html">Recover Password</a>
+                                        <a href="recover.jsp">Recover Password</a>
                                     </li>
                                 </ul>
                             </div>
@@ -138,7 +144,17 @@
                                     aria-expanded="false"
                                 >
                                     <i class="dripicons-search noti-icon"></i>
-                            </a>
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-animated dropdown-lg p-0">
+                                    <form class="p-3">
+                                        <input
+                                            type="text"
+                                            class="form-control"
+                                            placeholder="Search ..."
+                                            aria-label="Recipient's username"
+                                        >
+                                    </form>
+                                </div>
                             </li>
                             <li class="dropdown notification-list">
                                 <a
@@ -188,7 +204,8 @@
                                     </span>
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-end dropdown-menu-animated topbar-dropdown-menu profile-dropdown">
-                                    <a href="javascript:void(0);" class="dropdown-item notify-item">
+                                    <!-- item-->
+                                    <a href="/Disaster_Safety/LogoutServlet" class="dropdown-item notify-item">
                                         <i class="mdi mdi-logout me-1"></i>
                                         <span>Logout</span>
                                     </a>
@@ -198,7 +215,6 @@
                         <button class="button-menu-mobile open-left">
                             <i class="mdi mdi-menu"></i>
                         </button>
-                      
                     </div>
                     <!-- end Topbar -->
                     <!-- Start Content-->
@@ -214,7 +230,7 @@
                                                 <th>Phone Number</th>
                                                 <th>Case</th>
                                                 <th>Location (Map)</th>
-                                                <th>Accept/Delete</th>
+                                                <th>Delete</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -223,12 +239,12 @@
                                             <td><%= inDanger.getId() %></td>
                                             <td><%= inDanger.getPhoneNumber() %></td>
                                             <td><%= inDanger.getCaseType() %></td>
-                                            <td><a href="map.html?q=<%= inDanger.getLocation() %>" target="_blank">View Map</a></td>
+                                            <td><a href="https://www.google.com/maps?q=<%= inDanger.getLocation() %>" target="_blank">View Map</a></td>
                                             <td>
                                                 <!-- Placeholder for Accept/Delete actions -->
-                                                <form action="acceptDelete" method="post">
+                                                <form action="/Disaster_Safety/DeleteInDangerServlet" method="post">
                                                     <input type="hidden" name="id" value="<%= inDanger.getId() %>">
-                                                    <button type="submit" name="action" value="accept" class="btn btn-success">Accept</button>
+                                               
                                                     <button type="submit" name="action" value="delete" class="btn btn-danger">Delete</button>
                                                 </form>
                                             </td>

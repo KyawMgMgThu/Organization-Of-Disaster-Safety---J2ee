@@ -30,43 +30,57 @@
         data-leftbar-theme="dark"
         data-layout-mode="fluid"
         data-rightbar-onstart="true"
-    >
-        <!-- Begin page -->
+    >  <!-- Begin page -->
         <div class="wrapper">
             <!-- ========== Left Sidebar Start ========== -->
             <div class="leftside-menu">
                 <!-- LOGO -->
-                <a href="index.html" class="logo text-center logo-light"></a>
+                <a href="index.html" class="logo text-center logo-light">
+    
+                </a>
                 <div class="h-100" id="leftside-menu-container" data-simplebar>
                     <!--- Sidemenu -->
                     <ul class="side-nav">
                         <li class="side-nav-title side-nav-item">Navigation</li>
                         <li class="side-nav-item">
-                            <a href="index.html" class="side-nav-link">
-                                <i class="uil-home-alt"></i>
-                                <span> Dashboards</span>
-                            </a>
+                            <a href="index.jsp" class="side-nav-link">
+                            <i class="uil-home-alt"></i>
+                            <span> Dashboards</span>
+                        </a>
+                              
                         </li>
                         <li class="side-nav-item">
-                            <a href="news.html" class="side-nav-link">
+                            <a href="news.jsp" class="side-nav-link">
                                 <i class="mdi mdi-newspaper"></i>
                                 <span> News</span>
                             </a>
                         </li>
                         <li class="side-nav-item">
-                            <a href="indanger.html" class="side-nav-link">
+                            <a href="case.jsp" class="side-nav-link">
+                                <i class="mdi mdi-heart-pulse"></i>
+                                <span>Case</span>
+                            </a>
+                        </li>
+                        <li class="side-nav-item">
+                            <a href="indanger.jsp" class="side-nav-link">
                                 <i class="mdi mdi-car-emergency"></i>
                                 <span>In Danger</span>
                             </a>
                         </li>
                         <li class="side-nav-item">
-                            <a href="map.html" class="side-nav-link">
-                                <i class="uil-location-point"></i>
+                            <a
+                                href="map.jsp"
+                                class="side-nav-link"
+                            >
+                                <i class="mdi mdi-map-marker-radius"></i>
                                 <span> Maps</span>
                             </a>
                         </li>
                         <li class="side-nav-item">
-                            <a href="admin.html" class="side-nav-link">
+                            <a
+                                href="admin.jsp"
+                                class="side-nav-link"
+                            >
                                 <i class="uil-user"></i>
                                 <span>Admin</span>
                             </a>
@@ -86,20 +100,21 @@
                             <div class="collapse" id="sidebarPagesAuth">
                                 <ul class="side-nav-third-level">
                                     <li>
-                                        <a href="login.html">Login</a>
+                                        <a href="login.jsp">Login</a>
                                     </li>
                                     <li>
-                                        <a href="register.html">Register</a>
+                                        <a href="register.jsp">Register</a>
                                     </li>
                                     <li>
-                                        <a href="logout.html">Logout</a>
+                                        <a href="/Disaster_Safety/LogoutServlet">Logout</a>
                                     </li>
                                     <li>
-                                        <a href="recoverpw.html">Recover Password</a>
+                                        <a href="recover.jsp">Recover Password</a>
                                     </li>
                                 </ul>
                             </div>
                         </li>
+                        
                     </ul>
                     <!-- End Sidebar -->
                     <div class="clearfix"></div>
@@ -122,6 +137,16 @@
                                 >
                                     <i class="dripicons-search noti-icon"></i>
                                 </a>
+                                <div class="dropdown-menu dropdown-menu-animated dropdown-lg p-0">
+                                    <form class="p-3">
+                                        <input
+                                            type="text"
+                                            class="form-control"
+                                            placeholder="Search ..."
+                                            aria-label="Recipient's username"
+                                        >
+                                    </form>
+                                </div>
                             </li>
                             <li class="dropdown notification-list">
                                 <a
@@ -163,15 +188,23 @@
                                     aria-haspopup="false"
                                     aria-expanded="false"
                                 >
-                                    <span class="account-user-avatar">
-                                        <i class="uil-user icon-size-lg rounded-circle"></i>
-                                    </span>
+                                <span class="account-user-avatar">
+                                    <i class="uil-user icon-size-lg rounded-circle"></i>
+                                </span>
                                     <span>
-                                        <span class="account-user-name mt-2">Kyaw Mg Mg Thu</span>
+                                       <span class="account-user-name mt-2"><%
+   									 if (session != null && session.getAttribute("username") != null) {
+        									out.print(session.getAttribute("username"));
+    								} else {
+        									response.sendRedirect("login.jsp");
+        									return; 
+    									}
+									%></span>
                                     </span>
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-end dropdown-menu-animated topbar-dropdown-menu profile-dropdown">
-                                    <a href="javascript:void(0);" class="dropdown-item notify-item">
+                                    <!-- item-->
+                                    <a href="/Disaster_Safety/LogoutServlet" class="dropdown-item notify-item">
                                         <i class="mdi mdi-logout me-1"></i>
                                         <span>Logout</span>
                                     </a>
@@ -181,7 +214,6 @@
                         <button class="button-menu-mobile open-left">
                             <i class="mdi mdi-menu"></i>
                         </button>
-                
                     </div>
                     <!-- end Topbar -->
                     <!-- Start Content-->
@@ -367,18 +399,23 @@
             <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
             <script>
-                var map = L.map('map').setView([16.8661, 96.1951], 6); 
+        var map = L.map('map').setView([16.8661, 96.1951], 6); // Default view
 
-                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { 
-                maxZoom: 25,
-                }).addTo(map);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 25,
+        }).addTo(map);
 
-
-                L.marker([16.8661, 96.1951])  
-                .addTo(map)
-                .bindPopup('<b>Hello!</b><br>This is Yangon, Myanmar.')
-                .openPopup();
-            </script>
+        // Locations data passed from the servlet
+        var locations = <%= request.getAttribute("locations") %>;
+        
+        locations.forEach(function(location) {
+            var coords = location.split(',');
+            var lat = parseFloat(coords[0]);
+            var lng = parseFloat(coords[1]);
+            L.marker([lat, lng]).addTo(map)
+                .bindPopup('<b>User Location</b><br>Latitude: ' + lat + '<br>Longitude: ' + lng);
+        });
+    </script>
             
         </body>
     </html>
