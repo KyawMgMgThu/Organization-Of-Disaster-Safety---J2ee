@@ -273,7 +273,7 @@
                                 </div>
                                 <h4 class="mb-4">Add News</h4>
                                 <form action="/Disaster_Safety/NewsUpdateServlet" method="post" enctype="multipart/form-data">
-            <input type="hidden" name="id" value="<%= id %>">
+            <input type="hidden" name="id" value="<%= idParam %>">
             <div class="mb-3">
                 <label for="title" class="form-label">Title</label>
                 <input type="text" class="form-control" id="title" name="title" value="<%= title %>" required>
@@ -284,7 +284,7 @@
             </div>
             <div class="mb-3">
                 <label for="photo" class="form-label">Current Photo</label><br>
-                <img src="../news_images/<%= photoPath %>" alt="Current Photo" width="100"><br><br>
+                <img src="../news_image/<%= photoPath %>" alt="Current Photo" width="100"><br><br>
                 <label for="newPhoto" class="form-label">Change Photo</label>
                 <input type="file" class="form-control" id="newPhoto" name="photo" accept="image/*">
             </div>

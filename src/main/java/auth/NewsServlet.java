@@ -20,25 +20,30 @@ import java.util.UUID;
 @MultipartConfig
 public class NewsServlet extends HttpServlet {
 
-    private static final String UPLOAD_DIR = "news_images";
+	private static final String UPLOAD_DIRECTORY = "news_image";
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String title = request.getParameter("title");
         String content = request.getParameter("content");
-        Part filePart = request.getPart("photo");
+        Part imagePart = request.getPart("photo");
 
-        String photoPath = null;
-        if (filePart != null) {
-            String fileName = UUID.randomUUID().toString() + "_" + filePart.getSubmittedFileName();
-            String uploadPath = getServletContext().getRealPath("") + File.separator + UPLOAD_DIR;
-            File uploadDir = new File(uploadPath);
-            if (!uploadDir.exists()) {
-                uploadDir.mkdir();
-            }
-            photoPath = UPLOAD_DIR + File.separator + fileName;
-            filePart.write(uploadPath + File.separator + fileName);
+        if (imagePart == null || imagePart.getSize() == 0) {
+            response.sendRedirect("admin.jsp?status=error&message=Image upload failed. Please select an image.");
+            return;
         }
+
+        String fileName = imagePart.getSubmittedFileName();
+        String imagePath = getServletContext().getRealPath("") + File.separator + UPLOAD_DIRECTORY;
+        File uploadDir = new File(imagePath);
+        if (!uploadDir.exists()) uploadDir.mkdir();
+        try {
+            imagePart.write(imagePath + File.separator + fileName);
+        } catch (IOException e) {
+            response.sendRedirect("/Admin/news.jsp?status=error&message=Failed to save image. " + e.getMessage());
+            return;
+        }
+
 
         Connection conn = null;
         PreparedStatement pstmt = null;
@@ -49,7 +54,7 @@ public class NewsServlet extends HttpServlet {
             pstmt = conn.prepareStatement(query);
             pstmt.setString(1, title);
             pstmt.setString(2, content);
-            pstmt.setString(3, photoPath);
+            pstmt.setString(3, fileName);
 
             int result = pstmt.executeUpdate();
             PrintWriter out = response.getWriter();
@@ -60,7 +65,7 @@ public class NewsServlet extends HttpServlet {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            response.getWriter().println("<script>alert('An error occurred.');window.location.href='news.jsp';</script>");
+            response.getWriter().println("<script>alert('An error occurred.');window.location.href='/Admin/news.jsp';</script>");
         } finally {
             if (pstmt != null) try { pstmt.close(); } catch (SQLException e) { e.printStackTrace(); }
             if (conn != null) try { conn.close(); } catch (SQLException e) { e.printStackTrace(); }

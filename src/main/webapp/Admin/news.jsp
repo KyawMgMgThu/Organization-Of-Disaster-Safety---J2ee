@@ -260,7 +260,7 @@
                                                 <td class="news-title"><%= title %></td>
                                                 <td class="news-content"><%= content %></td>
                                                 <td>
-                                                    <img src="../news_images/<%= photo %>" alt="News Photo" class="news-photo" width="100">
+                                                    <img src="../news_image/<%= photo %>" alt="News Photo" class="news-photo" width="100">
                                                 </td>
                                                 <td>
     <a href="/Disaster_Safety/Admin/newsedit.jsp?id=<%= id %>" class="btn btn-primary btn-sm edit-btn">

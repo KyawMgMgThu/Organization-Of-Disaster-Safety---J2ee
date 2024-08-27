@@ -237,7 +237,7 @@
                                     <i class="uil-user icon-size-lg rounded-circle"></i>
                                 </span>
                                     <span>
-                                       <span class="account-user-name mt-2"><%
+                                       <span class="account-user-name mt-2" style="text-transform:capitalize;"><%
    									 if (session != null && session.getAttribute("username") != null) {
         									out.print(session.getAttribute("username"));
     								} else {
@@ -263,43 +263,86 @@
                     <!-- end Topbar -->
                     <!-- Start Content-->
                     <div class="container-fluid">
-                        <div class="row">
-                            <div class=" col-xl-12 col-lg-12">
-                                <div class="row mt-4">
-                                    <div class="col-sm-6">
-                                        <div class="card widget-flat">
-                                            <div class="card-body">
-                                                <div class="float-end">
-                                                    <i class="mdi mdi-newspaper"></i>
-                                                </div>
-                                                <h5 class="text-muted fw-normal mt-0" title="Number of News">Total News</h5>
-                                                  <h3 class="mt-3 mb-3"><%= request.getAttribute("newsCount") %></h3>
-                                            </div>
-                                            <!-- end card-body-->
-                                        </div>
-                                        <!-- end card-->
-                                    </div>
-                                    <!-- end col-->
-                                    <div class="col-sm-6">
-                                        <div class="card widget-flat">
-                                            <div class="card-body">
-                                                <div class="float-end">
-                                                    <i class="mdi mdi-medical-bag"></i>
-                                                </div>
-                                                <h5 class="text-muted fw-normal mt-0" title="Number of Dengerous">To People Asking For Help </h5>
-                                                <h3 class="mt-3 mb-3"><%= request.getAttribute("inDangerCount") %></h3>
-                                            </div>
-                                            <!-- end card-body-->
-                                        </div>
-                                        <!-- end card-->
-                                    </div>
-                                    <!-- end col-->
-                                </div>
-                                <!-- end row -->
-                            </div>
-                            <!-- end col -->
+                     <div class="row mt-4">
+                <div class="col-lg-8 mb-4 order-0">
+                  <div class="card">
+                    <div class="d-flex align-items-end row">
+                      <div class="col-sm-7">
+                        <div class="card-body">
+                          <h5 class="card-title text-primary">Congratulations <span style="text-transform:capitalize;"><%out.print(session.getAttribute("username")); %></span></h5>
+                          <p class="mb-4">
+                            Welcome! Our<span class="fw-bold"> Origanzition of Disaster Safety System</span>  
+
+                          </p>
                         </div>
-                        <!-- end row -->
+                      </div>
+                    
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-4 col-md-4 order-1">
+                  <div class="row ">
+                    <div class="col-lg-6 col-md-12 col-6 mb-4">
+                      <div class="card">
+                        <div class="card-body">
+                          <div class="card-title d-flex align-items-start justify-content-between">
+                            <div class="avatar flex-shrink-0">
+                           
+                              <i class="mdi mdi-newspaper icon-size-lg rounded"></i>
+                            </div>
+                            <div class="dropdown">
+                              <button
+                                class="btn p-0"
+                                type="button"
+                                id="cardOpt3"
+                                data-bs-toggle="dropdown"
+                                aria-haspopup="true"
+                                aria-expanded="false"
+                              >
+                                <i class="bx bx-dots-vertical-rounded"></i>
+                              </button>
+                            </div>
+                          </div>
+                          <span class="fw-semibold d-block mb-1">Total News</span>
+                          <h3 class="card-title mb-2">+<%= request.getAttribute("newsCount") %></h3>
+                          <small class="text-success fw-semibold"><i class="bx bx-up-arrow-alt"></i></small>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-lg-6 col-md-12 col-6 mb-4">
+                      <div class="card">
+                        <div class="card-body">
+                          <div class="card-title d-flex align-items-start justify-content-between">
+                            <div class="avatar flex-shrink-0">
+							  <i class="mdi mdi-medical-bag rounded icon-size-lg"></i>
+                            </div>
+                            <div class="dropdown">
+                              <button
+                                class="btn p-0"
+                                type="button"
+                                id="cardOpt6"
+                                data-bs-toggle="dropdown"
+                                aria-haspopup="true"
+                                aria-expanded="false"
+                              >
+                                <i class="bx bx-dots-vertical-rounded"></i>
+                              </button>
+                              
+                            </div>
+                          </div>
+                          <span class="fw-semibold d-block mb-1">Asking For Help</span>
+                          <h3 class="card-title text-nowrap mb-1">+<%= request.getAttribute("inDangerCount") %></h3>
+                          <small class="text-success fw-semibold"><i class="bx bx-up-arrow-alt"></i></small>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                    
+                  </div>
+                </div>
+              </div>
 
                         <div class="row">
                             <div class="col-xl-12 col-lg-12 order-lg-2 order-xl-1">
@@ -316,7 +359,6 @@
                                                         <th>Phone Number</th>
                                                         <th>Case</th>
                                                         <th>Location (Map)</th>
-                                                        <th>Delete</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -326,13 +368,7 @@
                                             <td><%= inDanger.getPhoneNumber() %></td>
                                             <td><%= inDanger.getCaseType() %></td>
                                             <td><a href="map.html?q=<%= inDanger.getLocation() %>" target="_blank">View Map</a></td>
-                                            <td>
-                                                <!-- Placeholder for Accept/Delete actions -->
-                                                <form action="/Disaster_Safety/DeleteInDangerServlet" method="post">
-                                                    <input type="hidden" name="id" value="<%= inDanger.getId() %>">
-                                                    <button type="submit" name="action" value="delete" class="btn btn-danger">Delete</button>
-                                                </form>
-                                            </td>
+                                            
                                         </tr>
                                         <% } %>
                                                 </tbody>

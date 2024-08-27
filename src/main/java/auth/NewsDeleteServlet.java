@@ -30,14 +30,14 @@ public class NewsDeleteServlet extends HttpServlet {
             int rowsAffected = stmt.executeUpdate();
 
             if (rowsAffected > 0) {
-                response.sendRedirect("Admin/admin.jsp?msg=News+item+deleted+successfully");
+                response.sendRedirect("Admin/news.jsp?msg=News+item+deleted+successfully");
             } else {
-                response.sendRedirect("Admin/admin.jsp?msg=Failed+to+delete+news+item");
+                response.sendRedirect("Admin/news.jsp?msg=Failed+to+delete+news+item");
             }
 
         } catch (Exception e) {
             e.printStackTrace();
-            response.sendRedirect("admin.jsp?msg=Error+occurred");
+            response.sendRedirect("/Admin/news.jsp?msg=Error+occurred");
         } finally {
             try { if (stmt != null) stmt.close(); } catch (Exception e) { e.printStackTrace(); }
             try { if (conn != null) conn.close(); } catch (Exception e) { e.printStackTrace(); }

@@ -120,7 +120,17 @@
         <servlet-name>CaseEditServlet</servlet-name>
         <url-pattern>/CaseEditServlet</url-pattern>
     </servlet-mapping>
-
+ 
+ 
+ <servlet>
+    <servlet-name>NewsServlet</servlet-name>
+    <servlet-class>auth.NewsServlet</servlet-class>
+</servlet>
+<servlet-mapping>
+    <servlet-name>NewsServlet</servlet-name>
+    <url-pattern>/index.jsp</url-pattern>
+</servlet-mapping>
+ 
 
 
 
@@ -136,9 +146,21 @@
     <url-pattern>/InDangerServlet</url-pattern>
 </servlet-mapping>
 
+<servlet>
+    <servlet-name>NewsServlet</servlet-name>
+    <servlet-class>user.NewsServlet</servlet-class>
+</servlet>
+<servlet-mapping>
+    <servlet-name>NewsServlet</servlet-name>
+    <url-pattern>/index.jsp</url-pattern>
+</servlet-mapping>
+
+
 
 </web-app>
 </element>
+
+
 
 
 

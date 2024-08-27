@@ -44,17 +44,20 @@
                             <span class="icon-bar"></span>
                             <span class="icon-bar"></span>
                         </button>
-                        <a class="navbar-brand" href="index.html">Organization Of
+                        <a class="navbar-brand" href="index.jsp">Organization Of
                             <br>
                             <span class="well_1">Disaster Safety</span>
                         </a>
                     </div>
                     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                         <ul class="nav navbar-nav navbar-center">
-                            <li><a href="index.html">Home</a></li>
+                            <li><a href="index.jsp">Home</a></li>
                             <li class="active"><a href="inDanger.jsp">In Danger?</a></li>
-                            <li><a href="contacts.html">Contacts</a></li>
-                            <li><a href="weather.html">Weather</a></li>
+                            <li>
+                                <a href="news.jsp">News</a>
+                            </li>
+                            <li><a href="contacts.jsp">Contacts</a></li>
+                            <li><a href="weather.jsp">Weather</a></li>
                         </ul>
                         <ul class="navbar-right">
                             <li class="dropdown">
@@ -110,7 +113,9 @@
                 <div class="footer_inner clearfix">
                     <div class="col-sm-10">
                         <div class="footer_8">
-                            <p> © All Rights Reserved. Developed by <a href="#">Group✌🏽+☝🏽</a></p>
+                            <p>© All Rights Reserved. Developed by
+                                <a href="#">Group✌🏽+☝🏽</a>
+                            </p>
                         </div>
                     </div>
                     <div class="col-sm-2"></div>
