@@ -7,26 +7,76 @@
         <link href="css/bootstrap.min.css" rel="stylesheet">
         <link href="css/style.css" rel="stylesheet">
         <link href="css/element.css" rel="stylesheet">
-        <!-- Font Awesome CSS (serve locally) -->
         <link rel="stylesheet" href="../font awesome/css/all.min.css">
         <link href="https://fonts.googleapis.com/css?family=Caveat+Brush" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css?family=Source+Serif+Pro" rel="stylesheet">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
-        <link
-            rel="stylesheet"
-            href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
-            integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI="
-            crossorigin=""
-        >
-        <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js" integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM=" crossorigin=""></script>
         <script src="js/jquery-2.1.1.min.js"></script>
         <script src="js/bootstrap.min.js"></script>
+        <style>
+            .weather-result {
+                margin-top: 20px;
+                margin-bottom: 13rem;
+                margin-right: 19rem;
+            }
+            .weather-card {
+                border: 1px solid #ddd;
+                padding: 20px;
+                border-radius: .5rem;
+                background-color: black;
+                color: white;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+            }
+            .weather-icon {
+                margin-right: 20px;
+            }
+            .weather-info {
+                flex: 1;
+            }
+            .weather-info p{
+                font-size: 1.8rem;
+            }
+            .btn {
+                background-color: black;
+                color: white;
+            }
+              @media (max-width: 767px) {
+        .weather-result {
+            margin-top: 20px;
+            margin-bottom: 3rem;
+            margin-right: 0;
+            margin-left: 0;
+        }
+        .weather-card {
+            flex-direction: column;
+            align-items: flex-start;
+            padding: 15px;
+            margin: 10px 0;
+        }
+        .weather-icon, .weather-info {
+            margin-right: 0;
+            margin-bottom: 10px;
+            align-self: center;
+        }
+        .weather-info h3 {
+            font-size: 1.8rem;
+        }
+        .weather-info p {
+            font-size: 1.5rem;
+        }
+        .btn {
+            width: 100%;
+            margin-top: 10px;
+        }
+    }
+        </style>
     </head>
     <body>
         <section id="header">
             <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
                 <div class="container">
-                    <!-- Brand and toggle get grouped for better mobile display -->
                     <div class="navbar-header">
                         <button
                             class="navbar-toggle"
@@ -39,79 +89,134 @@
                             <span class="icon-bar"></span>
                             <span class="icon-bar"></span>
                         </button>
-                        <a class="navbar-brand" href="index.jsp">
-                            Organization Of
+                        <a class="navbar-brand" href="index.jsp">Organization Of
                             </br>
                             <span class="well_1">Disaster Safety</span>
                         </a>
                     </div>
-                    <!-- Collect the nav links, forms, and other content for toggling -->
+
                     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                         <ul class="nav navbar-nav navbar-center">
-                            <li>
-                                <a href="index.jsp">Home</a>
-                            </li>
-                            <li >
-                                <a href="inDanger.jsp">In Danger?</a>
-                            </li>
-                            <li>
-                                <a href="news.jsp">News</a>
-                            </li>
-                            <li>
-                                <a href="contacts.jsp">Contacts</a>
-                            </li>
-                            <li class="active">
-                                <a href="weather.jsp">Weather</a>
-                            </li>
-                        </ul>
-                        <ul class="navbar-right">
-                            <li class="dropdown">
-                                <a class="text_1 pad_1" href="#" data-toggle="dropdown">
-                                    <span class="fas fa-search"></span>
-                                </a>
-                                <ul class="dropdown-menu drop_inner" style="min-width:100%;">
-                                    <li>
-                                        <div class="row_1">
-                                            <div class="col-sm-12">
-                                                <form class="navbar-form navbar-left" role="search">
-                                                    <div class="input-group">
-                                                        <input type="text" class="form-control" placeholder="Search">
-                                                        <span class="input-group-btn">
-                                                            <button class="btn btn-primary" type="button">
-                                                                Go!
-                                                            </button>
-                                                        </span>
-                                                    </div>
-                                                </form>
-                                            </div>
-                                        </div>
-                                    </li>
-                                </ul>
-                            </li>
+                            <li><a href="index.jsp">Home</a></li>
+                            <li><a href="inDanger.jsp">In Danger?</a></li>
+                            <li><a href="news.jsp">News</a></li>
+                            <li><a href="contacts.jsp">Contacts</a></li>
+                            <li class="active"><a href="weather.html">Weather</a></li>
                         </ul>
                     </div>
-                    <!-- /.navbar-collapse -->
                 </div>
-                <!-- /.container-fluid -->
             </nav>
         </section>
-        
-        
-        <section id="footer">
+
+        <div class="container" style="margin-top: 100px;">
+            <h2>Search City Weather</h2>
+            <form id="weatherForm">
+                <div class="form-group row">
+                    <div class="col-sm-10">
+                        <input type="text" id="city" class="form-control" placeholder="City Name">
+                    </div>
+                    <div class="col-sm-2">
+                        <button type="submit" class="btn">Get Weather</button>
+                    </div>
+                </div>
+            </form>
+
+            <div id="weatherResult" class="weather-result"></div>
+        </div>
+
+           <section id="footer">
             <div class="col-sm-12 padding_all">
                 <div class="footer_inner clearfix">
                     <div class="col-sm-10">
                         <div class="footer_8">
-                            <p>
-                                © All Rights Reserved. Developed by
-                                <a href="www.github.com/kyawmgmgthu">Group✌🏽+☝🏽</a>
+                            <p><b id="year"></b>&#169 All Rights Reserved. Developed by
+                                <a href="#">Group III</a>
                             </p>
                         </div>
                     </div>
                     <div class="col-sm-2"></div>
                 </div>
             </div>
-        </section>
-        <script src="js/script.js"></script>
+</section>
+
+        <script>
+		const year = new Date().getFullYear();
+        document.getElementById('year').textContent = year;
+            function fetchWeatherByCity(city) {
+                const apiKey = 'b808afd52eb5d8de666c3944d63df696';
+                const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
+
+                fetch(apiUrl)
+                    .then(response => response.json())
+                    .then(data => displayWeather(data))
+                    .catch(error => {
+                        console.error('Error fetching the weather data:', error);
+                        document.getElementById('weatherResult').innerHTML = '<p>Something went wrong. Please try again later.</p>';
+                    });
+            }
+
+            function fetchWeatherByCoordinates(lat, lon) {
+                const apiKey = 'b808afd52eb5d8de666c3944d63df696';
+                const apiUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric`;
+
+                fetch(apiUrl)
+                    .then(response => response.json())
+                    .then(data => displayWeather(data))
+                    .catch(error => {
+                        console.error('Error fetching the weather data:', error);
+                        document.getElementById('weatherResult').innerHTML = '<p>Something went wrong. Please try again later.</p>';
+                    });
+            }
+
+            function displayWeather(data) {
+                const weatherResult = document.getElementById('weatherResult');
+                if (data.cod === 200) {
+                    const weatherIconUrl = `http://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`;
+                    const weatherCard = `
+                        <div class="weather-card">
+                            <img src="${weatherIconUrl}" alt="Weather Icon" class="weather-icon">
+                            <div class="weather-info">
+                                <h3>Weather in ${data.name}</h3>
+                                <p><strong>Temperature:</strong> ${data.main.temp}°C</p>
+                                <p><strong>Weather:</strong> ${data.weather[0].description}</p>
+                                <p><strong>Humidity:</strong> ${data.main.humidity}%</p>
+                                <p><strong>Wind Speed:</strong> ${data.wind.speed} m/s</p>
+                            </div>
+                        </div>
+                    `;
+                    weatherResult.innerHTML = weatherCard;
+                } else {
+                    weatherResult.innerHTML = `<p>City not found. Please try again.</p>`;
+                }
+            }
+            document.getElementById('weatherForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                const city = document.getElementById('city').value;
+                if (city) {
+                    fetchWeatherByCity(city);
+                }
+            });
+
+            function getWeatherForCurrentLocation() {
+                if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(
+                        (position) => {
+                            const lat = position.coords.latitude;
+                            const lon = position.coords.longitude;
+                            fetchWeatherByCoordinates(lat, lon);
+                        },
+                        (error) => {
+                            console.error('Error getting location:', error);
+                            document.getElementById('weatherResult').innerHTML = '<p>Unable to get your location. Please enter a city name.</p>';
+                        }
+                    );
+                } else {
+                    document.getElementById('weatherResult').innerHTML = '<p>Geolocation is not supported by this browser. Please enter a city name.</p>';
+                }
+            }
+
+            // Call the function to get weather for current location on page load
+            window.onload = getWeatherForCurrentLocation;
+        </script>
     </body>
 </html>

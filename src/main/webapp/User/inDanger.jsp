@@ -57,7 +57,7 @@
                                 <a href="news.jsp">News</a>
                             </li>
                             <li><a href="contacts.jsp">Contacts</a></li>
-                            <li><a href="weather.jsp">Weather</a></li>
+                            <li><a href="weather.html">Weather</a></li>
                         </ul>
                         <ul class="navbar-right">
                             <li class="dropdown">
@@ -113,21 +113,23 @@
                 <div class="footer_inner clearfix">
                     <div class="col-sm-10">
                         <div class="footer_8">
-                            <p>© All Rights Reserved. Developed by
-                                <a href="#">Group✌🏽+☝🏽</a>
+                            <p><b id="year"></b>&#169 All Rights Reserved. Developed by
+                                <a href="#">Group III</a>
                             </p>
                         </div>
                     </div>
                     <div class="col-sm-2"></div>
                 </div>
             </div>
-        </section>
-        <script src="js/script.js"></script>
+</section>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
+        <script src="js/map.js"></script>
         <script>
+        const year = new Date().getFullYear();
+        document.getElementById('year').textContent = year;
         document.getElementById('userForm').addEventListener('submit', function(event) {
-            event.preventDefault(); // Prevent default form submission
-
-            // Capture form data
+            event.preventDefault(); 
+            console.log('Form submitted');
             const phone = document.getElementById('phone').value;
             const caseId = document.getElementById('case').value;
 
@@ -136,7 +138,7 @@
                     function(position) {
                         const lat = position.coords.latitude;
                         const lng = position.coords.longitude;
-                        updateMap(lat, lng); // Call your existing map update function
+                        updateMap(lat, lng);
                         sendLocation(phone, caseId, lat, lng);
                     },
                     function(error) {
@@ -145,30 +147,39 @@
                     { enableHighAccuracy: true }
                 );
             } else {
-                alert("Geolocation is not supported by this browser.");
+					console.log("error");
             }
         });
 
         function sendLocation(phone, caseId, lat, lng) {
             console.log('Sending data:', { phone: phone, case: caseId, latitude: lat, longitude: lng });
-            fetch('/Disaster_Safety/InDangerServlet', { // Ensure this matches the servlet URL
+            fetch('/Disaster_Safety/InDangerServlet', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({ phone: phone, case: caseId, latitude: lat, longitude: lng })
             })
-            .then(response => response.text())
-            .then(text => {
-                console.log('Response:', text);
-                try {
-                    const data = JSON.parse(text);
-                    console.log(data);
-                } catch (error) {
-                    console.error('Invalid JSON response:', text);
+            .then(response => response.json())
+            .then(data => {
+                console.log('Response:', data);
+                if (data.status === "success") {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success!',
+                        text: 'Your location has been successfully submitted.',
+                        confirmButtonText: 'OK'
+                    }).then(() => {
+                        window.location.href = "index.jsp";  // Example redirection after success
+                    });
+                } else {
+                 
                 }
             })
-            .catch(error => console.error('Error:', error));
+            .catch(error => {
+                console.error('Error:', error);
+              
+            });
         }
 
        

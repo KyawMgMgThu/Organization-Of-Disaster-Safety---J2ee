@@ -51,7 +51,7 @@ public class NewsUpdateServlet extends HttpServlet {
         try {
             // Database connection
             Class.forName("org.mariadb.jdbc.Driver");
-            conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/ODS_System", "kyawmgmgthu", "kyawmgmgthu789");
+            conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/ODS_System?useUnicode=true&characterEncoding=UTF-8", "kyawmgmgthu", "kyawmgmgthu789");
 
             // Update the news item in the database
             String updateQuery = "UPDATE news SET title = ?, content = ?, photo_path = ? WHERE id = ?";

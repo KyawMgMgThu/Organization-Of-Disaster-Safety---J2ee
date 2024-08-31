@@ -1,3 +1,4 @@
+<%@ page contentType="text/html; charset=UTF-8" %>
 <%@ page import="java.sql.*, javax.servlet.*, javax.servlet.http.*" %>
 <!DOCTYPE html>
 <html lang="en">
@@ -26,7 +27,7 @@
         data-layout-mode="fluid"
         data-rightbar-onstart="true"
     >
-         <!-- Begin page -->
+     <!-- Begin page -->
         <div class="wrapper">
             <!-- ========== Left Sidebar Start ========== -->
             <div class="leftside-menu">
@@ -57,9 +58,21 @@
                             </a>
                         </li>
                         <li class="side-nav-item">
-                            <a href="indanger.jsp" class="side-nav-link">
+                            <a href="http://localhost:8080/Disaster_Safety/Indanger" class="side-nav-link">
                                 <i class="mdi mdi-car-emergency"></i>
                                 <span>In Danger</span>
+                            </a>
+                        </li>
+                        <li class="side-nav-item">
+                            <a href="city.jsp" class="side-nav-link">
+                                <i class="mdi mdi-city"></i>
+                                <span>City</span>
+                            </a>
+                        </li>
+                        <li class="side-nav-item">
+                            <a href="contact.jsp" class="side-nav-link">
+                                <i class="mdi mdi-home"></i>
+                                <span>Department Contacts</span>
                             </a>
                         </li>
                         <li class="side-nav-item">

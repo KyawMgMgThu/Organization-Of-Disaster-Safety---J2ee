@@ -1,32 +1,73 @@
 <%@ page import="java.sql.*, javax.servlet.*, javax.servlet.http.*" %>
+<%
+
+String city_id = request.getParameter("city_id");
+String d_name = request.getParameter("d_name");
+String phone_number = request.getParameter("phone_number");
+Connection conn = null;
+PreparedStatement pstmt = null;
+
+final String DB_URL = "jdbc:mariadb://localhost:3306/ODS_System";
+final String DB_USER = "kyawmgmgthu";
+final String DB_PASSWORD = "kyawmgmgthu789";
+
+try {
+    // Load the MariaDB JDBC driver
+    Class.forName("org.mariadb.jdbc.Driver");
+
+    // Establish database connection
+    conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
+
+    // SQL query to insert city data
+    String sql = "INSERT INTO department_contacts (city_id, department_name, phone_number) VALUES (?, ?, ?)";
+    pstmt = conn.prepareStatement(sql);
+    pstmt.setString(1, city_id);
+    pstmt.setString(2, d_name);
+    pstmt.setString(3, phone_number);
+
+
+        // Execute the update
+        int result = pstmt.executeUpdate();
+
+        // Check the result
+        if (result > 0) {
+            out.print("Success");
+        } else {
+            out.print("Failed");
+        }
+    } catch (Exception e) {
+        e.printStackTrace();
+    } finally {
+        // Close resources
+        if (pstmt != null) try { pstmt.close(); } catch (SQLException e) { e.printStackTrace(); }
+        if (conn != null) try { conn.close(); } catch (SQLException e) { e.printStackTrace(); }
+    }
+%>
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <title>ODS | Admin</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <!-- third party css -->
-        <link href="assets/css/vendor/dataTables.bootstrap5.css" rel="stylesheet" type="text/css" />
-        <link href="assets/css/vendor/responsive.bootstrap5.css" rel="stylesheet" type="text/css" />
-        <link href="assets/css/vendor/buttons.bootstrap5.css" rel="stylesheet" type="text/css" />
-        <link href="assets/css/vendor/select.bootstrap5.css" rel="stylesheet" type="text/css" />
-        <link href="assets/css/vendor/fixedHeader.bootstrap5.css" rel="stylesheet" type="text/css" />
-        <link href="assets/css/vendor/fixedColumns.bootstrap5.css" rel="stylesheet" type="text/css" />
-        <!-- third party css end -->
-
-        <!-- App css -->
-        <link href="assets/css/icons.min.css" rel="stylesheet" type="text/css" />
-        <link href="assets/css/app.min.css" rel="stylesheet" type="text/css" id="app-style"/>
-        <link rel="stylesheet" href="assets/css/style.css">
-    </head>
-    <body
-        class="loading"
-        data-layout-color="light"
-        data-leftbar-theme="dark"
-        data-layout-mode="fluid"
-        data-rightbar-onstart="true"
-    >
-    <!-- Begin page -->
+<head>
+    <meta charset="utf-8">
+    <title>ODS | City</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Include CSS files -->
+    <link href="assets/css/vendor/dataTables.bootstrap5.css" rel="stylesheet" type="text/css" />
+    <link href="assets/css/vendor/responsive.bootstrap5.css" rel="stylesheet" type="text/css" />
+    <link href="assets/css/vendor/buttons.bootstrap5.css" rel="stylesheet" type="text/css" />
+    <link href="assets/css/vendor/select.bootstrap5.css" rel="stylesheet" type="text/css" />
+    <link href="assets/css/vendor/fixedHeader.bootstrap5.css" rel="stylesheet" type="text/css" />
+    <link href="assets/css/vendor/fixedColumns.bootstrap5.css" rel="stylesheet" type="text/css" />
+    <link href="assets/css/icons.min.css" rel="stylesheet" type="text/css" />
+    <link href="assets/css/app.min.css" rel="stylesheet" type="text/css" id="app-style"/>
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+ <body
+    class="loading"
+    data-layout-color="light"
+    data-leftbar-theme="dark"
+    data-layout-mode="fluid"
+    data-rightbar-onstart="true"
+>
+     <!-- Begin page -->
         <div class="wrapper">
             <!-- ========== Left Sidebar Start ========== -->
             <div class="leftside-menu">
@@ -51,13 +92,13 @@
                             </a>
                         </li>
                         <li class="side-nav-item">
-                            <a href="http://localhost:8080/Disaster_Safety/Indanger" class="side-nav-link">
+                            <a href="case.jsp" class="side-nav-link">
                                 <i class="mdi mdi-heart-pulse"></i>
                                 <span>Case</span>
                             </a>
                         </li>
                         <li class="side-nav-item">
-                            <a href="indanger.jsp" class="side-nav-link">
+                            <a href="http://localhost:8080/Disaster_Safety/Indanger" class="side-nav-link">
                                 <i class="mdi mdi-car-emergency"></i>
                                 <span>In Danger</span>
                             </a>
@@ -223,85 +264,137 @@
                         </button>
                     </div>
                     <!-- end Topbar -->
-                    <!-- Start Content-->
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div class="col-xl-12 col-lg-12">
-                                <div class="text-end my-2">
-                                    <a href="case.jsp" class="btn btn-secondary"><i class="mdi mdi-arrow-left"></i> Back to Case</a>
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-xl-12 col-lg-12">
+                    <div class="text-end my-2">
+                                         <button class="btn btn-secondary" onclick="openAddCityModal()"><i class="mdi mdi-plus"></i> Add</button>           
                                 </div>
-                                <h4 class="mb-4">Add Case</h4>
-                                <%
-        String id = request.getParameter("id");
-        Connection conn = null;
-        PreparedStatement stmt = null;
-        ResultSet rs = null;
-        
-        if (id != null) {
+                        <div class="tab-content mt-4">
+                            <div class="tab-pane show active">
+                                <table id="datatable-buttons" class="table table-striped dt-responsive nowrap w-100">
+                                    <thead>
+                                        <tr>
+                                            <th>No</th>
+                                            <th>City Id</th>
+                                            <th>Location</th>
+                                        <th>Phone Number</th>
+
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                      <%
+                                      Statement stmt = null;
+                                      ResultSet rs = null;
+
+                    try {
+                        Class.forName("org.mariadb.jdbc.Driver");
+                        conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
+                        stmt = conn.createStatement();
+                        String query = "SELECT * FROM department_contacts";
+                        rs = stmt.executeQuery(query);
+                        int count = 1;
+
+                        while (rs.next()) {
+                            out.println("<tr>");
+                            out.println("<td>" + count + "</td>");
+                            out.println("<td>" + rs.getString("city_id") + "</td>");
+                            out.println("<td>" +rs.getString("department_name") +"</td>");
+                            out.println("<td>" +rs.getString("phone_number") +"</td>");
+                            out.println("<td>");
+                            out.println("<button class='btn btn-danger btn-sm delete-btn' onclick='deleteContact(" + rs.getInt("id") + ")'>");
+                            out.println("<i class='mdi mdi-trash-can'></i> Delete");
+                            out.println("</button>");
+                            out.println("</td>");
+                            out.println("</tr>");
+                            count++;
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    } finally {
+                        if (rs != null) try { rs.close(); } catch (SQLException e) { e.printStackTrace(); }
+                        if (stmt != null) try { stmt.close(); } catch (SQLException e) { e.printStackTrace(); }
+                        if (conn != null) try { conn.close(); } catch (SQLException e) { e.printStackTrace(); }
+                    }
+                %>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+
+
+ <!-- Modal box -->
+       <div id="addCityModal" style="display:none; position:fixed; top:50%; left:50%; transform:translate(-50%, -50%); width:300px; background:#fff; padding:20px; border-radius:8px; box-shadow:0 0 15px rgba(0,0,0,0.1); z-index:1000;">
+        <h4>Add City</h4>
+        <form id="addCityForm" onsubmit="return saveCity()">
+            <div class="mb-3">
+                <label for="DPname" class="form-label">Department Name</label>
+                <input type="text" class="form-control" id="DPname" name="d_name" required>
+            </div>
+            <div class="mb-3">
+                <label for="phNo" class="form-label">Phone Number</label>
+                <input type="text" class="form-control" id="phNo" name="phone_number" required>
+            </div>
+            <div class="mb-3">
+    <label for="city-select">Select City:</label>
+    <select id="city-select" class="form-control" onchange="showCityData()">
+        <option value="" name="city_id">Select a City</option>
+        <% 
             try {
                 Class.forName("org.mariadb.jdbc.Driver");
-                conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/ODS_System", "kyawmgmgthu", "kyawmgmgthu789");
-
-                String query = "SELECT * FROM `Case` WHERE id = ?";
-                stmt = conn.prepareStatement(query);
-                stmt.setInt(1, Integer.parseInt(id));
-                rs = stmt.executeQuery();
-
-                if (rs.next()) {
-                    String caseName = rs.getString("case_name");
-    %>
-    <form action="/Disaster_Safety/CaseEditServlet" method="post">
-        <input type="hidden" name="id" value="<%= id %>">
-        <div>
-            <label for="case_name">Case Name:</label>
-            <input type="text" id="case_name" name="case_name" value="<%= caseName %>" required>
-        </div>
-        <button type="submit">Update</button>
-    </form>
-    <%
+                conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
+                stmt = conn.createStatement();
+                String query = "SELECT id,name FROM City";
+                rs = stmt.executeQuery(query);
+                while (rs.next()) {
+                    out.println("<option value='" + rs.getString("id") + "'>" + rs.getString("name") + "</option>");
                 }
             } catch (Exception e) {
                 e.printStackTrace();
-                out.println("Error: " + e.getMessage());
             } finally {
                 if (rs != null) try { rs.close(); } catch (SQLException e) { e.printStackTrace(); }
                 if (stmt != null) try { stmt.close(); } catch (SQLException e) { e.printStackTrace(); }
                 if (conn != null) try { conn.close(); } catch (SQLException e) { e.printStackTrace(); }
             }
-        } else {
-            out.println("No case ID provided.");
-        }
-    %>
+        %>
+    </select>
+</div>
+            <button type="submit" class="btn btn-primary">Save</button>
+            <button type="button" class="btn btn-secondary" onclick="closeAddCityModal()">Cancel</button>
+        </form>
+    </div>
 
-                            </div>
-                        </div>
-                    </div>
-                <!-- content -->
-                <!-- Footer Start -->
-                <footer class="footer">
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div class="col-md-6">
+    <!-- Overlay -->
+    <div id="modalOverlay" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:999;"></div>
+
+
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-6">
                                 <script>document.write(new Date().getFullYear())</script>
-                                © All Rights Reserved. Developed by Group✌🏽+☝🏽
+                                © All Rights Reserved. Developed by Group ✌🏽+☝🏽 
                             </div>
-                            <div class="col-md-6">
-                                <div class="text-md-end footer-links d-none d-md-block">
-                                    <a href="about.html">About</a>
-                                    <a href="contact.html">Contact Us</a>
-                                </div>
-                            </div>
-                        </div>
+                <div class="col-md-6">
+                    <div class="text-md-end footer-links d-none d-md-block">
+                        <a href="about.html">About</a>
+                        <a href="contact.html">Contact Us</a>
                     </div>
-                </footer>
-                <!-- end Footer -->
+                </div>
             </div>
-            <!-- ============================================================== -->
-            <!-- End Page content -->
-            <!-- ============================================================== -->
         </div>
-        <!-- END wrapper -->
-        <!-- Right Sidebar -->
+    </footer>
+    
+    <!-- Right Sidebar -->
         <div class="end-bar">
             <div class="rightbar-title">
                 <a href="javascript:void(0);" class="end-bar-toggle float-end">
@@ -431,25 +524,90 @@
         </div>
         <div class="rightbar-overlay"></div>
         <!-- /End-bar -->
-        <script src="assets/js/vendor.min.js"></script>
-        <script src="assets/js/app.min.js"></script>
 
-        <!-- third party js -->
-        <script src="assets/js/vendor/jquery.dataTables.min.js"></script>
-        <script src="assets/js/vendor/dataTables.bootstrap5.js"></script>
-        <script src="assets/js/vendor/dataTables.responsive.min.js"></script>
-        <script src="assets/js/vendor/responsive.bootstrap5.min.js"></script>
-        <script src="assets/js/vendor/dataTables.buttons.min.js"></script>
-        <script src="assets/js/vendor/buttons.bootstrap5.min.js"></script>
-        <script src="assets/js/vendor/buttons.print.min.js"></script>
-        <script src="assets/js/vendor/dataTables.keyTable.min.js"></script>
-        <script src="assets/js/vendor/fixedColumns.bootstrap5.min.js"></script>
-        <script src="assets/js/vendor/fixedHeader.bootstrap5.min.js"></script>
-        <!-- third party js ends -->
+    <!-- Include JS files -->
+    <script src="assets/js/vendor.min.js"></script>
+    <script src="assets/js/app.min.js"></script>
+    <script src="assets/js/vendor/jquery.dataTables.min.js"></script>
+    <script src="assets/js/vendor/dataTables.bootstrap5.js"></script>
+    <script src="assets/js/vendor/dataTables.responsive.min.js"></script>
+    <script src="assets/js/vendor/responsive.bootstrap5.min.js"></script>
+    <script src="assets/js/vendor/dataTables.buttons.min.js"></script>
+    <script src="assets/js/vendor/buttons.bootstrap5.min.js"></script>
+    <script src="assets/js/vendor/buttons.print.min.js"></script>
+    <script src="assets/js/vendor/dataTables.keyTable.min.js"></script>
+    <script src="assets/js/vendor/fixedColumns.bootstrap5.min.js"></script>
+    <script src="assets/js/vendor/fixedHeader.bootstrap5.min.js"></script>
+    <script src="assets/js/pages/demo.datatable-init.js"></script>
+    <script src="assets/js/script.js"></script>
+   <script>
+   
+   
+   function openAddCityModal() {
+       document.getElementById('addCityModal').style.display = 'block';
+       document.getElementById('modalOverlay').style.display = 'block';
+   }
 
-        <!-- demo app -->
-        <script src="assets/js/pages/demo.datatable-init.js"></script>\
-        <script src="assets/js/script.js"></script>
-    </body>
+   function closeAddCityModal() {
+       document.getElementById('addCityModal').style.display = 'none';
+       document.getElementById('modalOverlay').style.display = 'none';
+   }
+   $('#addCityForm').on('submit', function (e) {
+	    e.preventDefault();
+	    var cityId = $('#city-select').val();
+	    var departmentName = $('#DPname').val();
+	    var phoneNumber = $('#phNo').val();
 
+	    $.ajax({
+	        url: 'contact_add.jsp',
+	        type: 'POST',
+	        data: {
+	            city_id: cityId,
+	            d_name: departmentName,
+	            phone_number: phoneNumber
+	        },
+	        success: function (response) {
+	            if (response.trim() === 'Success') {
+	                alert('City added successfully');
+	                closeAddCityModal();
+	                location.reload(); // Refresh the page to show the new data
+	            } else {
+	                alert('Failed to add city');
+	            }
+	        },
+	        error: function (xhr, status, error) {
+	            console.error('Error:', error);
+	            alert('An error occurred while adding the city.');
+	        }
+	    });
+	});
+
+   function deleteContact(id) {
+	    if (confirm('Are you sure you want to delete this contact?')) {
+	        $.ajax({
+	            url: 'contact_delete.jsp',
+	            type: 'GET',
+	            data: {
+	                id: id
+	            },
+	            success: function (response) {
+	                if (response.trim() === 'Success') {
+	                    alert('Contact deleted successfully');
+	                    location.reload(); // Refresh the page to remove the deleted row
+	                } else {contact_delete
+	                    alert('Failed to delete contact');
+	                }
+	            },
+	            error: function (xhr, status, error) {
+	                console.error('Error:', error);
+	                alert('An error occurred while deleting the contact.');
+	            }
+	        });
+	    }
+	}
+ 
+
+</script>
+
+</body>
 </html>

@@ -1502,13 +1502,13 @@ label {
 
 .video-container .box-container .box h3,.video-container .box-container .box p{
   font-size: 1.8rem;
-  color: var(--light-color);
+  color: #00fff4;
   margin-top: 1rem;
-  text-transform: uppercase;
+  text-transform: capitalize;
 }
 
 .video-container .box-container .box:hover h3{
-  color: var(--animation-color);
+  color: #00fff4;
 }
 
 .box-container {
