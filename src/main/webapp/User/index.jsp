@@ -38,6 +38,7 @@
         </li>
           <li><a href="contacts.jsp">Contacts</a></li>
           <li><a href="weather.html">Weather</a></li>
+          <li><a href="../Admin/index.jsp">Admin</a></li>
         </ul>
         <ul class="navbar-right">
           <li class="dropdown"><a class="text_1 pad_1" href="#" data-toggle="dropdown"><span class="fas fa-search"></span></a>

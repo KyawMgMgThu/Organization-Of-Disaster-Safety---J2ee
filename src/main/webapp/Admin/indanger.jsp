@@ -1,12 +1,14 @@
+<%@ page import="java.sql.Connection" %>
+<%@ page import="java.sql.DriverManager" %>
+<%@ page import="java.sql.ResultSet" %>
+<%@ page import="java.sql.SQLException" %>
+<%@ page import="java.sql.Statement" %>
 <%@ page import="java.util.List" %>
-<%@ page import="java.util.ArrayList" %>
-<%@ page import="auth.model.InDanger" %>
+ <%
 
-<%
-    List<InDanger> inDangerList = (List<InDanger>) session.getAttribute("inDangerList");
-    if (inDangerList == null) {
-        inDangerList = new ArrayList<>();
-    }
+final String DB_URL = "jdbc:mariadb://localhost:3306/ODS_System";
+final String DB_USER = "kyawmgmgthu";
+final String DB_PASSWORD = "kyawmgmgthu789";
 %>
 <%@ page contentType="text/html; charset=UTF-8" %>
 
@@ -70,7 +72,7 @@
                             </a>
                         </li>
                         <li class="side-nav-item">
-                            <a href="http://localhost:8080/Disaster_Safety/Indanger" class="side-nav-link">
+                            <a href="indanger.jsp" class="side-nav-link">
                                 <i class="mdi mdi-car-emergency"></i>
                                 <span>In Danger</span>
                             </a>
@@ -212,7 +214,14 @@
                                     <i class="uil-user icon-size-lg rounded-circle"></i>
                                 </span>
                                     <span>
-                                        <span class="account-user-name mt-2">Kyaw Mg Mg Thu</span>
+                                          <span class="account-user-name mt-2"><%
+   									 if (session != null && session.getAttribute("username") != null) {
+        									out.print(session.getAttribute("username"));
+    								} else {
+        									response.sendRedirect("login.jsp");
+        									return; 
+    									}
+									%></span>
                                     </span>
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-end dropdown-menu-animated topbar-dropdown-menu profile-dropdown">
@@ -236,33 +245,63 @@
                                 <div class="tab-content mt-4">
                                     <div class="tab-pane show active">
                                         <table id="datatable-buttons" class="table table-striped dt-responsive nowrap w-100">
-                                        <thead>
-                                            <tr>
-                                                <th>No</th>
-                                                <th>Phone Number</th>
-                                                <th>Case</th>
-                                                <th>Location (Map)</th>
-                                                <th>Delete</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <% for (InDanger inDanger : inDangerList) { %>
-                                        <tr>
-                                            <td><%= inDanger.getId() %></td>
-                                            <td><%= inDanger.getPhoneNumber() %></td>
-                                            <td><%= inDanger.getCaseType() %></td>
-                                            <td><a href="https://www.google.com/maps?q=<%= inDanger.getLocation() %>" target="_blank">View Map</a></td>
-                                            <td>
-                                                <!-- Placeholder for Accept/Delete actions -->
-                                                <form action="/Disaster_Safety/DeleteInDangerServlet" method="post">
-                                                    <input type="hidden" name="id" value="<%= inDanger.getId() %>">
-                                               
-                                                    <button type="submit" name="action" value="delete" class="btn btn-danger">Delete</button>
-                                                </form>
-                                            </td>
-                                        </tr>
-                                        <% } %>
-                                        </tbody>
+                                         <thead>
+                                                <tr>
+                                                    <th>No</th>
+                                                    <th>Phone Number</th>
+                                                    <th>Case</th>
+                                                    <th>Map</th>
+                                                    <th>Status</th>
+                                                    <th>Help Date</th>
+                                                    <th>Delete</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                              <%
+                                    Connection conn = null;
+                                    Statement stmt = null;
+                                    ResultSet rs = null;
+                                    int count = 1;
+
+                                    try {
+                                        Class.forName("org.mariadb.jdbc.Driver");
+                                        conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
+                                        stmt = conn.createStatement();
+                                        String sql = "SELECT i.id, i.ph_number, c.case_name, i.map, i.status, i.help_date FROM In_Danger i JOIN `Case` c ON i.case_id = c.id";
+                                        rs = stmt.executeQuery(sql);
+
+                                        while (rs.next()) {
+                                            int id = rs.getInt("id");
+                                            String status = rs.getString("status");
+                                            out.println("<tr>");
+                                            out.println("<td>" + count + "</td>");
+                                            out.println("<td>" + rs.getString("ph_number") + "</td>");
+                                            out.println("<td>" + rs.getString("case_name") + "</td>");
+                                            out.println("<td><a href='https://www.google.com/maps?q=" + rs.getString("map") + "' target='_blank'>View Map</a></td>");
+                                            out.println("<td>");
+                                            out.println("<select class='status-select' data-id='" + id + "'>");
+                                            out.println("<option value='Pending'" + ("Pending".equals(status) ? " selected" : "") + ">Pending</option>");
+                                            out.println("<option value='Accepted'" + ("Accepted".equals(status) ? " selected" : "") + ">Accepted</option>");
+                                            out.println("</select>");
+                                            out.println("</td>");
+                                            out.println("<td>" + rs.getString("help_date") + "</td>");
+                                            out.println("<td><a href='deleteIndanger.jsp?id=" + id + "' class='btn btn-danger btn-sm'>Delete</a></td>");
+                                            out.println("</tr>");
+                                            count++;
+                                        }
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                    } finally {
+                                        try {
+                                            if (rs != null) rs.close();
+                                            if (stmt != null) stmt.close();
+                                            if (conn != null) conn.close();
+                                        } catch (SQLException e) {
+                                            e.printStackTrace();
+                                        }
+                                    }
+                                %>
+                                            </tbody>
                                     </table>                                 
                                     </div> <!-- end preview-->
                                 
@@ -279,24 +318,7 @@
 
                 </div>
                 <!-- content -->
-                <!-- Footer Start -->
-                <footer class="footer">
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <script>document.write(new Date().getFullYear())</script>
-                                Â© All Rights Reserved. Developed by Groupâð½+âð½
-                            </div>
-                            <div class="col-md-6">
-                                <div class="text-md-end footer-links d-none d-md-block">
-                                    <a href="about.html">About</a>
-                                    <a href="contact.html">Contact Us</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </footer>
-                <!-- end Footer -->
+
             </div>
             <!-- ============================================================== -->
             <!-- End Page content -->
@@ -451,6 +473,48 @@
 
         <!-- demo app -->
         <script src="assets/js/pages/demo.datatable-init.js"></script>
+         <script>
+         document.querySelectorAll('.status-select').forEach(select => {
+        	    select.addEventListener('change', function() {
+        	        const id = this.getAttribute('data-id');
+        	        const status = this.value;
+        	        
+        	        fetch('updateStatus.jsp', {
+        	            method: 'POST',
+        	            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        	            body: new URLSearchParams({ id: id, status: status })
+        	        })
+        	        .then(response => response.text())
+        	        .then(data => {
+        	            if (data.trim() === 'success') {
+        	                alert('Status updated successfully.');
+        	            } else {
+        	                alert('Failed to update status.');
+        	            }
+        	        })
+        	        .catch(error => {
+        	            console.error('Error:', error);
+        	            alert('Error occurred while updating status.');
+        	        });
+        	    });
+        	});
+        
+        
+        function deleteCity(id) {
+            if (confirm('Are you sure you want to delete this help?')) {
+                fetch('deleteIndanger.jsp?id=' + id)
+                    .then(response => response.text())
+                    .then(result => {
+                        alert(result);
+                        location.reload(); 
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        alert('Error occurred while deleting city.');
+                    });
+            }
+        }
+    </script>
        
     </body>
 

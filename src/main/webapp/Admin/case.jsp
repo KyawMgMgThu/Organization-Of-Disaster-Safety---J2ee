@@ -56,7 +56,7 @@
                             </a>
                         </li>
                         <li class="side-nav-item">
-                            <a href="http://localhost:8080/Disaster_Safety/Indanger" class="side-nav-link">
+                            <a href="indanger.jsp" class="side-nav-link">
                                 <i class="mdi mdi-car-emergency"></i>
                                 <span>In Danger</span>
                             </a>
@@ -298,25 +298,7 @@
     </div>
                     
                   
-                <!-- Footer Start -->
-                <footer class="footer">
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <script>document.write(new Date().getFullYear())</script>
-                               	© All Rights Reserved. Developed by Group ✌🏽+☝🏽 
-                            </div>
-                            <div class="col-md-6">
-                                <div class="text-md-end footer-links d-none d-md-block">
-                                    <a href="about.html">About</a>
-                                    <a href="contact.html">Contact Us</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </footer>
-                <!-- end Footer -->
-                
+               
             </div>
             <!-- ============================================================== -->
             <!-- End Page content -->

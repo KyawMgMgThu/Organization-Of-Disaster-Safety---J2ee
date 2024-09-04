@@ -4,52 +4,54 @@
 <%@ page import="java.sql.DriverManager" %>
 <%@ page import="java.sql.PreparedStatement" %>
 <%@ page import="java.sql.ResultSet" %>
-<%@ page import="auth.model.InDanger" %>
-
+<%@ page import="java.sql.Statement" %>
+<%@ page import="java.sql.SQLException" %>
 <%
-    List<InDanger> inDangerList = (List<InDanger>) session.getAttribute("inDangerList");
-    if (inDangerList == null) {
-        inDangerList = new ArrayList<>();
+final String DB_URL = "jdbc:mariadb://localhost:3306/ODS_System";
+final String DB_USER = "kyawmgmgthu";
+final String DB_PASSWORD = "kyawmgmgthu789";
+
+int inDangerCount = 0;
+int newsCount = 0;
+int count = 1; // Initialize count
+
+Connection conn = null;
+Statement stmt = null; // Changed to Statement
+ResultSet rs = null;
+
+try {
+    Class.forName("org.mariadb.jdbc.Driver");
+    conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
+
+    // Count for In_Danger
+    String inDangerQuery = "SELECT COUNT(*) FROM In_Danger";
+    stmt = conn.createStatement(); // Changed to createStatement
+    rs = stmt.executeQuery(inDangerQuery);
+    if (rs.next()) {
+        inDangerCount = rs.getInt(1);
     }
 
-    int inDangerCount = 0;
-    int newsCount = 0;
-
-    Connection conn = null;
-    PreparedStatement stmt = null;
-    ResultSet rs = null;
-
-    try {
-        Class.forName("org.mariadb.jdbc.Driver");
-        conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/ODS_System", "kyawmgmgthu", "kyawmgmgthu789");
-
-        // Count for In_Danger
-        String inDangerQuery = "SELECT COUNT(*) FROM In_Danger";
-        stmt = conn.prepareStatement(inDangerQuery);
-        rs = stmt.executeQuery();
-        if (rs.next()) {
-            inDangerCount = rs.getInt(1);
-        }
-
-        // Count for News
-        String newsQuery = "SELECT COUNT(*) FROM news";
-        stmt = conn.prepareStatement(newsQuery);
-        rs = stmt.executeQuery();
-        if (rs.next()) {
-            newsCount = rs.getInt(1);
-        }
-
-        // Set counts as request attributes
-        request.setAttribute("inDangerCount", inDangerCount);
-        request.setAttribute("newsCount", newsCount);
-
-    } catch (Exception e) {
-        e.printStackTrace();
-    } finally {
-        if (rs != null) try { rs.close(); } catch (Exception e) { e.printStackTrace(); }
-        if (stmt != null) try { stmt.close(); } catch (Exception e) { e.printStackTrace(); }
-        if (conn != null) try { conn.close(); } catch (Exception e) { e.printStackTrace(); }
+    // Count for News
+    String newsQuery = "SELECT COUNT(*) FROM news";
+    rs.close(); // Close previous ResultSet
+    stmt.close(); // Close previous Statement
+    stmt = conn.createStatement(); // Recreate Statement
+    rs = stmt.executeQuery(newsQuery);
+    if (rs.next()) {
+        newsCount = rs.getInt(1);
     }
+
+    // Set counts as request attributes
+    request.setAttribute("inDangerCount", inDangerCount);
+    request.setAttribute("newsCount", newsCount);
+
+} catch (Exception e) {
+    e.printStackTrace();
+} finally {
+    if (rs != null) try { rs.close(); } catch (Exception e) { e.printStackTrace(); }
+    if (stmt != null) try { stmt.close(); } catch (Exception e) { e.printStackTrace(); }
+    if (conn != null) try { conn.close(); } catch (Exception e) { e.printStackTrace(); }
+}
 %>
 <!DOCTYPE html>
 <html lang="en">
@@ -107,7 +109,7 @@
                             </a>
                         </li>
                         <li class="side-nav-item">
-                            <a href="http://localhost:8080/Disaster_Safety/Indanger" class="side-nav-link">
+                            <a href="indanger.jsp" class="side-nav-link">
                                 <i class="mdi mdi-car-emergency"></i>
                                 <span>In Danger</span>
                             </a>
@@ -366,24 +368,57 @@
                                         <div class="table-responsive">
                                             <table class="table table-striped dt-responsive nowrap w-100">
                                                 <thead>
-                                                    <tr>
-                                                        <th>No</th>
-                                                        <th>Phone Number</th>
-                                                        <th>Case</th>
-                                                        <th>Location (Map)</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                      <% for (InDanger inDanger : inDangerList) { %>
-                                        <tr>
-                                            <td><%= inDanger.getId() %></td>
-                                            <td><%= inDanger.getPhoneNumber() %></td>
-                                            <td><%= inDanger.getCaseType() %></td>
-                                            <td><a href="map.html?q=<%= inDanger.getLocation() %>" target="_blank">View Map</a></td>
-                                            
-                                        </tr>
-                                        <% } %>
-                                                </tbody>
+                                                <tr>
+                                                    <th>No</th>
+                                                    <th>Phone Number</th>
+                                                    <th>Case</th>
+                                                    <th>Map</th>
+                                                    <th>Status</th>
+                                                    <th>Help Date</th>
+                                                    <th>Delete</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                              <%
+                                              try {
+                                            	    Class.forName("org.mariadb.jdbc.Driver");
+                                            	    conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
+                                            	    String sql = "SELECT i.id, i.ph_number, c.case_name, i.map, i.status, i.help_date FROM In_Danger i JOIN `Case` c ON i.case_id = c.id";
+                                            	    stmt = conn.createStatement();
+                                            	    rs = stmt.executeQuery(sql);
+
+                                            	    while (rs.next()) {
+                                            	        int id = rs.getInt("id");
+                                            	        String status = rs.getString("status");
+                                            	        out.println("<tr>");
+                                            	        out.println("<td>" + count + "</td>");
+                                            	        out.println("<td>" + rs.getString("ph_number") + "</td>");
+                                            	        out.println("<td>" + rs.getString("case_name") + "</td>");
+                                            	        out.println("<td><a href='https://www.google.com/maps?q=" + rs.getString("map") + "' target='_blank'>View Map</a></td>");
+                                            	        out.println("<td>");
+                                            	        out.println("<select class='status-select' data-id='" + id + "'>");
+                                            	        out.println("<option value='Pending'" + ("Pending".equals(status) ? " selected" : "") + ">Pending</option>");
+                                            	        out.println("<option value='Accepted'" + ("Accepted".equals(status) ? " selected" : "") + ">Accepted</option>");
+                                            	        out.println("</select>");
+                                            	        out.println("</td>");
+                                            	        out.println("<td>" + rs.getString("help_date") + "</td>");
+                                            	        out.println("<td><a href='deleteIndanger.jsp?id=" + id + "' class='btn btn-danger btn-sm'>Delete</a></td>");
+                                            	        out.println("</tr>");
+                                            	        count++;
+                                            	    }
+                                            	} catch (Exception e) {
+                                            	    e.printStackTrace();
+                                            	} finally {
+                                            	    try {
+                                            	        if (rs != null) rs.close();
+                                            	        if (stmt != null) stmt.close();
+                                            	        if (conn != null) conn.close();
+                                            	    } catch (SQLException e) {
+                                            	        e.printStackTrace();
+                                            	    }
+                                            	}
+                                %>
+                                            </tbody>
                                                 
                                                 
                                                 
@@ -401,25 +436,7 @@
                     <!-- container -->
                 </div>
                 <!-- content -->
-                <!-- Footer Start -->
-                <footer class="footer">
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <script>document.write(new Date().getFullYear())</script>
-                               	© All Rights Reserved. Developed by Group ✌🏽+☝🏽 
-                            </div>
-                            <div class="col-md-6">
-                                <div class="text-md-end footer-links d-none d-md-block">
-                                    <a href="about.html">About</a>
-                                    <a href="contact.html">Contact Us</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </footer>
-                <!-- end Footer -->
-                
+ 
             </div>
             <!-- ============================================================== -->
             <!-- End Page content -->

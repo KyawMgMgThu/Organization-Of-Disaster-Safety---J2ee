@@ -33,7 +33,7 @@ public class CaseEditServlet extends HttpServlet {
 
             int rowsAffected = stmt.executeUpdate();
             if (rowsAffected > 0) {
-                response.sendRedirect("/Admin/case.jsp");
+                response.sendRedirect("Admin/case.jsp");
             } else {
                 response.getWriter().println("Update failed.");
             }

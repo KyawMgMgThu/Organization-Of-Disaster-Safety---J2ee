@@ -67,6 +67,7 @@
                         <li class="active"><a href="news.jsp">News</a></li>
                         <li><a href="contacts.jsp">Contacts</a></li>
                         <li><a href="weather.html">Weather</a></li>
+                        <li><a href="../Admin/index.jsp">Admin</a></li>
                     </ul>
                     <ul class="navbar-right">
                         <li class="dropdown">

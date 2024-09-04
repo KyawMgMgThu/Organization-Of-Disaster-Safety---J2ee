@@ -62,6 +62,7 @@
                         <li class="active"><a href="news.jsp">News</a></li>
                         <li><a href="contacts.jsp">Contacts</a></li>
                         <li><a href="weather.html">Weather</a></li>
+                        <li><a href="../Admin/index.jsp">Admin</a></li>
                     </ul>
                     <ul class="navbar-right">
                         <li class="dropdown">
@@ -99,12 +100,15 @@
                 PreparedStatement pstmt = null;
                 ResultSet rs = null;
 
+                // Updated query to sort by created_at in descending order
                 String query = "SELECT * FROM news";
                 String searchQuery = request.getParameter("query");
 
                 if (searchQuery != null && !searchQuery.trim().isEmpty()) {
                     query += " WHERE title LIKE ? OR content LIKE ?";
                 }
+
+                query += " ORDER BY created_at DESC"; // Order by latest first
 
                 try {
                     Class.forName("org.mariadb.jdbc.Driver");
@@ -154,23 +158,22 @@
         </div>
     </div>
 
-   <section id="footer">
-            <div class="col-sm-12 padding_all">
-                <div class="footer_inner clearfix">
-                    <div class="col-sm-10">
-                        <div class="footer_8">
-                            <p><b id="year"></b>&#169 All Rights Reserved. Developed by
-                                <a href="#">Group III</a>
-                            </p>
-                        </div>
+    <section id="footer">
+        <div class="col-sm-12 padding_all">
+            <div class="footer_inner clearfix">
+                <div class="col-sm-10">
+                    <div class="footer_8">
+                        <p><b id="year"></b>&#169 All Rights Reserved. Developed by
+                            <a href="#">Group III</a>
+                        </p>
                     </div>
-                    <div class="col-sm-2"></div>
                 </div>
+                <div class="col-sm-2"></div>
             </div>
-</section>
+        </div>
+    </section>
 
     <script src="js/script.js"></script>
-    <script>  const year = new Date().getFullYear();
-    document.getElementById('year').textContent = year;</script>
+    <script>const year = new Date().getFullYear(); document.getElementById('year').textContent = year;</script>
 </body>
 </html>

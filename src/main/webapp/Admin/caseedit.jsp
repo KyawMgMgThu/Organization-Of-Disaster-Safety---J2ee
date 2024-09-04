@@ -252,11 +252,11 @@
     %>
     <form action="/Disaster_Safety/CaseEditServlet" method="post">
         <input type="hidden" name="id" value="<%= id %>">
-        <div>
-            <label for="case_name">Case Name:</label>
-            <input type="text" id="case_name" name="case_name" value="<%= caseName %>" required>
-        </div>
-        <button type="submit">Update</button>
+         <div class="mb-3">
+        <label for="name" class="form-label">Case Name</label>
+        <input type="text" class="form-control" id="name" name="case_name" value="<%= caseName %>" required>
+    </div>
+        <button type="submit" class="btn btn-primary">Update</button>
     </form>
     <%
                 }
@@ -277,24 +277,7 @@
                         </div>
                     </div>
                 <!-- content -->
-                <!-- Footer Start -->
-                <footer class="footer">
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <script>document.write(new Date().getFullYear())</script>
-                                © All Rights Reserved. Developed by Group✌🏽+☝🏽
-                            </div>
-                            <div class="col-md-6">
-                                <div class="text-md-end footer-links d-none d-md-block">
-                                    <a href="about.html">About</a>
-                                    <a href="contact.html">Contact Us</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </footer>
-                <!-- end Footer -->
+               
             </div>
             <!-- ============================================================== -->
             <!-- End Page content -->
